@@ -192,7 +192,7 @@ in this context “function” refer to the mathematical one
 +++
 ## In other words
 ## @color[IndianRed](Functions) must be
-## @color[GoldenRod](Referentially Trasparent)
+## @color[GoldenRod](Referentially Transparent)
 
 +++
 ## This is not allowed
