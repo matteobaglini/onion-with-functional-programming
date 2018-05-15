@@ -191,6 +191,11 @@ in this context “function” refer to the mathematical one
 - @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
 
 +++
+## In few words
+## Functions must be
+## @color[GoldenRod](Referentially Trasparent)
+
++++
 ## This is not allowed
 <br /><br />
 ```scala
