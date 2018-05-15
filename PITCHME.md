@@ -287,14 +287,6 @@ or
 ## Onion as a radar
 ![Radar](assets/radar.png)
 
-+++
-## Radar benefits
-give you a tool useful to avoid:
-- mixing @color[GoldenRod](many responsibilities)
-- mixing @color[GoldenRod](level of abstraction)
-- mixing @color[GoldenRod](orthogonal concerns)
-- mixing @color[GoldenRod](domain with infrastructure)
-
 ---
 # Let the
 # @color[IndianRed](marriage) begins
