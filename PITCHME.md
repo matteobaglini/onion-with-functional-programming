@@ -191,7 +191,6 @@ in this context “function” refer to the mathematical one
 
 +++
 ## This is not allowed
-<br /><br />
 ```scala
 val toS : Int => String = n => {
   appendAll("log.txt", "some content")
@@ -202,7 +201,6 @@ val toS : Int => String = n => {
 
 +++
 ## Nor even this
-<br /><br />
 ```scala
 val list = collection.mutable.ListBuffer[Int]()
 val toS : Int => String = n => {
