@@ -190,8 +190,8 @@ in this context “function” refer to the mathematical one
 - @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
 
 +++
-## In few words
-## Functions must be
+## In other words
+## @color[IndianRed](Functions) must be
 ## @color[GoldenRod](Referentially Trasparent)
 
 +++
