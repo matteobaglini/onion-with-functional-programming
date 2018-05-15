@@ -190,11 +190,6 @@ in this context “function” refer to the mathematical one
 - @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
 
 +++
-## In other words
-## @color[IndianRed](Functions) must be
-## @color[GoldenRod](Referentially Transparent)
-
-+++
 ## This is not allowed
 <br /><br />
 ```scala
@@ -218,6 +213,11 @@ val toS : Int => String = n => {
 ```
 @[1,3](mutate external state)
 @[4-5](return value depends from external state)
+
++++
+## In other words
+## @color[IndianRed](Functions) must be
+## @color[GoldenRod](Referentially Transparent)
 
 +++
 > “Object-oriented programming makes code understandable by @color[GoldenRod](encapsulating moving parts).<br />Functional programming makes code understandable by @color[IndianRed](minimizing moving parts).”<br />— Michael Feathers
