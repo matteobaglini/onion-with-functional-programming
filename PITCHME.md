@@ -1412,6 +1412,7 @@ class FakeMessageGateway
 - abstract over effect type
 - make invalid state unrepresentable
 - remove mutable state from acceptance tests
+- use streaming I/O (from IO[List[A]] to Stream[IO, A])
 
 +++
 ## Play with requirements
