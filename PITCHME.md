@@ -172,7 +172,6 @@ val f: A => B
 
 +++
 ## Function examples
-<br /><br />
 ```scala
 val toS : Int => String = 
   n => n.toString
