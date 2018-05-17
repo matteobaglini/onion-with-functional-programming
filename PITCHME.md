@@ -12,12 +12,6 @@ sauce
 - enthusiastic technical trainer/coach
 - wannabe entrepreneur
 
-+++
-# Big thanks to
-<br /><br />
-# Organizers
-<!-- <img align="left" src="assets/fp-bo.png"> -->
-
 ---
 # The @color[GoldenRod](lab) rat
 
