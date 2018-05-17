@@ -14,7 +14,6 @@ sauce
 
 +++
 # Big thanks to
-<br /><br />
 <img align="left" src="assets/sponsors.png">
 
 ---
