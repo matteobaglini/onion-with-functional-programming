@@ -15,8 +15,7 @@ sauce
 +++
 # Big thanks to
 <br /><br />
-# Organizers
-<!-- <img align="left" src="assets/fp-bo.png"> -->
+<img align="left" src="assets/sponsors.png">
 
 ---
 # The @color[GoldenRod](lab) rat
