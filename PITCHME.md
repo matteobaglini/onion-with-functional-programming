@@ -758,9 +758,8 @@ with the outside world and even more important<br />
 ## @color[IndianRed](easier refactoring)
 
 +++
-## First example
-## @color[IndianRed](NO)
-## REFERENTIAL TRASPARENCY
+## First example - @color[IndianRed](Future)
+## @color[IndianRed](NO) REFERENTIAL TRASPARENCY
 
 +++
 ## Ask two numbers - @color[IndianRed](Future)
@@ -788,7 +787,7 @@ def program(): Future[Unit] =
 <img align="center" src="assets/future-duplication.png">
 
 +++
-## Refactored - @color[IndianRed](Future)
+## First Refactoring - @color[IndianRed](Future)
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
@@ -809,13 +808,38 @@ def program(): Future[Unit] =
 @[5-11](extract local)
 
 +++
-## Refactored Output :-( - @color[IndianRed](Future)
+## Output :-( - @color[IndianRed](Future)
 <img align="center" src="assets/future-refactored.png">
 
 +++
-## Second example
-## @color[GoldenRod](YES)
-## REFERENTIAL TRASPARENCY
+## Second Refactoring - @color[IndianRed](Future)
+```scala
+def askInt(): Future[Int] = 
+  Future(println("Please, give me a number:"))
+    .flatMap( _ => Future(io.StdIn.readLine().toInt))
+
+def askTwoInt(): Future[(Int, Int)] = {
+  val ask1 = askInt()
+  val ask2 = askInt()
+  for {
+    x <- ask1
+    y <- ask2
+  } yield (x , y)
+}
+
+def program(): Future[Unit] =
+  askTwoInt()
+    .flatMap(pair => Future(println(s"Result: ${pair}")))
+```
+@[5-12](extract local)
+
++++
+## Output :-( - @color[IndianRed](Future)
+<img align="center" src="assets/future-refactored2.png">
+
++++
+## Second example - @color[GoldenRod](IO)
+## @color[GoldenRod](YES) REFERENTIAL TRASPARENCY
 
 +++
 ## Ask two numbers - @color[GoldenRod](IO)
@@ -843,7 +867,7 @@ def program(): IO[Unit] =
 <img align="center" src="assets/io-duplication.png">
 
 +++
-## Refactored - @color[GoldenRod](IO)
+## First Refactoring - @color[GoldenRod](IO)
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
@@ -864,19 +888,44 @@ def program(): IO[Unit] =
 @[5-11](extract local)
 
 +++
-## Refactored Output :-) - @color[GoldenRod](IO)
+## Output :-) - @color[GoldenRod](IO)
 <img align="center" src="assets/io-refactored.png">
 
 +++
-## IO Monad war
+## Second Refactoring - @color[GoldenRod](IO)
+```scala
+def askInt(): IO[Int] = 
+  IO(println("Please, give me a number:"))
+    .flatMap( _ => IO(io.StdIn.readLine().toInt))
+
+def askTwoInt(): IO[(Int, Int)] = {
+  val ask1 = askInt()
+  val ask2 = askInt()
+  for {
+    x <- ask1
+    y <- ask2
+  } yield (x , y)
+}
+
+def program(): IO[Unit] =
+  askTwoInt()
+    .flatMap(pair => IO(println(s"Result: ${pair}")))
+```
+@[5-12](extract local)
+
++++
+## Output :-) - @color[GoldenRod](IO)
+<img align="center" src="assets/io-refactored.png">
+
++++
+## IO Monad complain
 this solution solves only the @color[GoldenRod](symptom)<br />
 but not the @color[IndianRed](disease) as I/O is impure by nature
 
 +++
-## So why not use it?
-working with IO Monad is @color[IndianRed](very similar) to<br />
-working with Future @color[GoldenRod](plus)<br /> 
-you get Referential Trasparency<br />
+## My 2 cents 
+IO Monad is like a @color[GoldenRod](pimped Future)<br />
+so @color[IndianRed](why not use it)?
 
 +++
 ## IO Monad in Scala
