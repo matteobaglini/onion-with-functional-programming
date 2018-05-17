@@ -15,9 +15,8 @@ sauce
 +++
 # Big thanks to
 <br /><br />
-<img align="left" src="assets/fp-bo.png">
-<img align="center" src="assets/avanscoperta_logo.png">
-<img align="right" src="assets/off.png">
+# Organizers
+<!-- <img align="left" src="assets/fp-bo.png"> -->
 
 ---
 # The @color[GoldenRod](lab) rat
@@ -42,20 +41,15 @@ https://github.com/matteobaglini/birthday-greetings-kata-scala
 ### the ~~hexagonal~~ onion architecture
 
 +++
-## Problem @size[0.2em](1/2)
+## Problem
 @color[GoldenRod](write a program that)
 1. Loads a set of employee records from a flat file
-2. Sends a greetings email to all employees whose birthday is today
-
-+++
-## Problem @size[0.2em](2/2)
-@color[GoldenRod](flat file format)
 ```javascript
 last_name, first_name, date_of_birth, email
 Doe, John, 1982/10/08, john.doe@foobar.com
 Ann, Mary, 1975/09/11, mary.ann@foobar.com
 ```
-@color[IndianRed](greetings email format)
+2. Sends a greetings email to all employees whose birthday is today
 ```AsciiDoc
 Subject: Happy birthday!
 Happy birthday, dear {employee's first name}!
@@ -184,10 +178,10 @@ val fromS : String => Int =
 
 +++
 ## The pure version
-in this context “function” refer to the mathematical one
-- @color[GoldenRod](Totality): A function must yield a value for every possible input
-- @color[GoldenRod](Determinism): A function must yield the same value for the same input
-- @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
+in this context “function” refer to the @color[IndianRed](mathematical) one
+- **Totality**: A function must yield @color[GoldenRod](a value for every possible input)
+- **Determinism**: A function must yield the @color[GoldenRod](same value for the same input)
+- **Pure**: A function’s only effect must be the @color[GoldenRod](computation of its return value)
 
 +++
 ## This is not allowed
@@ -213,7 +207,6 @@ val toS : Int => String = n => {
 @[4-5](return value depends from external state)
 
 +++
-## In other words
 ## @color[IndianRed](Functions) must be
 ## @color[GoldenRod](Referentially Transparent)
 
@@ -221,7 +214,7 @@ val toS : Int => String = n => {
 > “Object-oriented programming makes code understandable by @color[GoldenRod](encapsulating moving parts).<br />Functional programming makes code understandable by @color[IndianRed](minimizing moving parts).”<br />— Michael Feathers
 
 +++
-## it's a huge constraint
+## it's a @color[IndianRed](huge) constraint
 ## @color[GoldenRod](why embrace it)?
 
 +++
@@ -230,6 +223,12 @@ give you an @color[IndianRed](extraordinary boost) in terms of:
 - @color[GoldenRod](understandability)
 - @color[GoldenRod](composability)
 - @color[GoldenRod](testability)
+
++++
+## Especially
+## @color[GoldenRod](Referential Trasparency)
+## means
+## @color[IndianRed](easier refactoring)
 
 +++
 > “Functional programming (pure or otherwise) @color[GoldenRod](isn't the goal) of software engineering.<br/ ><br />Rather, @color[IndianRed](it’s a means to an end), like every other tool in the bag of a software engineer.” <br />- John A De Goes 
@@ -258,22 +257,17 @@ or
 
 +++
 ## Onion rules
-- The application is built around an independent domain
-- Direction of coupling is toward the center
-- Inner layers define interfaces. Outer layers implement interfaces
-- Domain code can be compiled and run separate from infrastructure
+- The application is built around an @color[GoldenRod](independent domain)
+- Direction of @color[GoldenRod](coupling is toward the center)
+- Domain code can be @color[GoldenRod](run separate from infrastructure)
 
 +++
-## Zoom in @size[0.2em](1/3)
+## Zoom in @size[0.2em](1/2)
 ![Onion](assets/onion-zoom-1.png)
 
 +++
-## Zoom in @size[0.2em](2/3)
+## Zoom in @size[0.2em](2/2)
 ![Onion](assets/onion-zoom-2.png)
-
-+++
-## Zoom in @size[0.2em](3/3)
-![Onion](assets/onion-zoom-3.png)
 
 +++
 ## Architecture Benefits
@@ -364,8 +358,7 @@ def sendGreetings(fileName: String,
 ## split loops
 ```scala
 def sendGreetings(fileName: String // ...
-  import collection.mutable.ListBuffer
-  val employees = new ListBuffer[Employee]
+  val loadedBuffer = new ListBuffer[Employee]
   val in = new BufferedReader(new FileReader(fileName))
   var str = in.readLine // skip header
   while ({ str = in.readLine; str != null }) {
@@ -374,83 +367,19 @@ def sendGreetings(fileName: String // ...
                             employeeData(0),
                             employeeData(2),
                             employeeData(3))
-    employees += employee
+    loadedBuffer += employee
   }
-  val loaded = employees.toList
+  val loaded = loadedBuffer.toList
 
+  val birthdaysBuffer = new ListBuffer[Employee]
   for (employee <- loaded) {
     if (employee.isBirthday(today)) {
-```
-@[6-13](split load employees loop)
-@[16-17](from othe logic)
-@[2-3,6,12,14,16](use local buffer)
-
-+++
-## Extract loadEmployees
-```scala
-private def loadEmployees(fileName: String): List[Employee] = {
-  import collection.mutable.ListBuffer
-  val employees = new ListBuffer[Employee]
-  val in = new BufferedReader(new FileReader(fileName))
-  var str = in.readLine // skip header
-  while ({ str = in.readLine; str != null }) {
-    val employeeData = str.split(", ")
-    val employee = Employee(employeeData(1),
-                            employeeData(0),
-                            employeeData(2),
-                            employeeData(3))
-    employees += employee
-  }
-  employees.toList
-}
-```
-
-+++
-## Extract loadEmployees
-```scala
-def sendGreetings(fileName: String // ...
-  val loaded = loadEmployees(fileName)
-  for (employee <- loaded) { 
-  // ...
-}
-```
-@[2]()
-
-+++
-## Split and extract haveBirthday
-```scala
-private def haveBirthday(loaded: List[Employee],
-                         today: XDate): List[Employee] = {
-  import collection.mutable.ListBuffer
-  val employees = new ListBuffer[Employee]
-  for (employee <- loaded) {
-    if (employee.isBirthday(today)) {
-      employees += employee
+      birthdaysBuffer += employee
     }
   }
-  employees.toList
-}
-```
+  val birthdays = birthdaysBuffer.toList
 
-+++
-## Split and extract haveBirthday
-```scala
-def sendGreetings(fileName: String // ...
-  val loaded = loadEmployees(fileName)
-  val birthdays = haveBirthday(loaded, today)
-  for (employee <- birthdays) { 
-  // ...
-}
-```
-@[3]()
-
-+++
-## Extract sendMessages
-```scala
-private def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
-  for (employee <- employees) {
+  for (employee <- birthdays) {
     val recipient = employee.email
     val body = s"Happy Birthday, dear ${employee.firstName}!"
     val subject = "Happy Birthday!"
@@ -462,11 +391,15 @@ private def sendMessages(smtpHost: String,
                 body,
                 recipient)
   }
-}
+}  
 ```
+@[5-12](one loop per responsibility)
+@[2,11,13](use local buffers)
+@[15-21](one loop per responsibility)
+@[23-34](one loop per responsibility)
 
 +++
-## Extract sendMessages
+## Extract functions
 ```scala
 def sendGreetings(fileName: String // ...
   val loaded = loadEmployees(fileName)
@@ -474,6 +407,8 @@ def sendGreetings(fileName: String // ...
   sendMessages(smtpHost, smtpPort, birthdays)
 }
 ```
+@[2](extract loadEmployees)
+@[3](extract haveBirthday)
 @[4](extract sendMessages)
 
 +++
@@ -486,11 +421,10 @@ def sendGreetings(fileName: String // ...
 # state
 
 +++
-## Extract parseEmployee
+## Imperative style
 ```scala
 private def loadEmployees(fileName: String): List[Employee] = {
-  import collection.mutable.ListBuffer
-  val employees = new ListBuffer[Employee]
+  val buffer = new ListBuffer[Employee]
   val in = new BufferedReader(new FileReader(fileName))
   var str = in.readLine // skip header
   while ({ str = in.readLine; str != null }) {
@@ -499,54 +433,35 @@ private def loadEmployees(fileName: String): List[Employee] = {
                             employeeData(0),
                             employeeData(2),
                             employeeData(3))
-    employees += employee
+    buffer += employee
   }
-  employees.toList
+  buffer.toList
 }
 ```
-@[7-11]()
+@[4-5](mutable var for each line)
+@[2,11](mutable collection as accumulator)
 
 +++
-## From imperative style
-```scala
-private def loadEmployees(fileName: String): List[Employee] = {
-  import collection.mutable.ListBuffer
-  val employees = new ListBuffer[Employee]
-  val in = new BufferedReader(new FileReader(fileName))
-  var str = in.readLine // skip header
-  while ({ str = in.readLine; str != null }) {
-    employees += parseEmployee(str) 
-  }
-  employees.toList
-}
-```
-@[5](mutable var for each line)
-@[3,7](mutable collection as accumulator)
-
-+++
-## To declarative style
+## Declarative style
 ```scala
 private def loadEmployees(fileName: String): List[Employee] = {
   val source = io.Source.fromFile(fileName)
   val lines = source.getLines.toList
   lines
     .drop(1) // skip header
-    .map(parseEmployee(_))
+    .map(line => {
+        val employeeData = str.split(", ")
+        val employee = Employee(employeeData(1),
+                                employeeData(0),
+                                employeeData(2),
+                                employeeData(3))
+        employee
+    })
 }
 ```
-@[2-3](load)
-@[4-6](after load)
-
-+++
-## Extract loadLines
-```scala
-private def loadLines(fileName: String): List[String] = {
-  val source = io.Source.fromFile(fileName)
-  try source.getLines.toList
-  finally source.close
-}
-```
-@[3-4](release resource)
+@[3](load all lines)
+@[4-6](parse lines)
+@[2-3,7-12](different level of abstractions)
 
 +++
 ## Same level of abstraction
@@ -554,12 +469,12 @@ private def loadLines(fileName: String): List[String] = {
 private def loadEmployees(fileName: String): List[Employee] = {
   loadLines(fileName)
     .drop(1) // skip header
-    .map(parseEmployee(_))
+    .map(line => parse(line))
 }
 ```
-@[2](base problem solution)
-@[3](derive next solution)
-@[4](derive next solution)
+@[2](load all lines)
+@[3](skip the first)
+@[4](and then parse each one)
 
 +++
 ## Abstraction escalation
@@ -574,13 +489,12 @@ private def loadEmployees(fileName: String)
 @[5](to List[Employee])
 
 +++
-## Imperative haveBirthday
+## Imperative style
 ```scala
-private def haveBirthday(loaded: List[Employee],
+private def haveBirthday(employees: List[Employee],
                          today: XDate): List[Employee] = {
-  import collection.mutable.ListBuffer
   val employees = new ListBuffer[Employee]
-  for (employee <- loaded) {
+  for (employee <- employees) {
     if (employee.isBirthday(today)) {
       employees += employee
     }
@@ -588,14 +502,15 @@ private def haveBirthday(loaded: List[Employee],
   employees.toList
 }
 ```
-@[5-6](filter logic)
+@[4-5](filter logic)
 
 +++
-## Declarative haveBirthday
+## Declarative style
 ```scala
-private def haveBirthday(loaded: List[Employee],
+private def haveBirthday(employees: List[Employee],
                          today: XDate): List[Employee] =
-  loaded.filter(_.isBirthday(today))
+  employees
+    .filter(employee => employee.isBirthday(today))
 ```
 
 +++
@@ -618,8 +533,6 @@ private def sendMessages(smtpHost: String,
   }
 }
 ```
-@[5-7](build message text)
-@[9-14](send message)
 
 +++
 ## Inline sendMessage
@@ -654,32 +567,6 @@ private def sendMessages(smtpHost: String,
 @[22](final send)
 
 +++
-## Extract buildSession
-```scala
-private def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
-  for (employee <- employees) {
-    val session = buildSession(smtpHost, smtpPort)
-
-    val recipient = employee.email
-    val sender = "sender@here.com"
-    val body = s"Happy Birthday, dear ${employee.firstName}!"
-    val subject = "Happy Birthday!"
-
-    val msg = new MimeMessage(session)
-    msg.setFrom(new InternetAddress(sender))
-    msg.setRecipient(Message.RecipientType.TO, new InternetAddress(recipient))
-    msg.setSubject(subject)
-    msg.setText(body);
-
-    Transport.send(msg)
-  }
-}
-```
-@[5]()
-
-+++
 ## Extract buildMessage
 ```scala
 private def sendMessages(smtpHost: String,
@@ -692,10 +579,11 @@ private def sendMessages(smtpHost: String,
   }
 }
 ```
-@[6]()
+@[5](extract buildSession)
+@[6](extract buildMessage)
 
 +++
-## Extract sendMessage
+## Extract new sendMessage
 ```scala
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
@@ -704,7 +592,6 @@ private def sendMessages(smtpHost: String,
     sendMessage(smtpHost, smtpPort, employee)
 }
 ```
-@[5]()
 
 ---
 # Handle @color[IndianRed](side-effects)
@@ -718,23 +605,25 @@ def haveBirthday(/*...*/): List[Employee]
 
 def sendMessages(/*...*/): Unit
 ```
-@[1](yes)
-@[3](no)
-@[5](yes)
 
 +++
-## How to handle I/O in pure fp?
+## How to @color[GoldenRod](handle I/O) in pure fp?
 
 +++
 ## IO Monad
-it's a technique that enables to @color[GoldenRod](capture the intent)<br />
-of I/O operations when they are invoked<br />
-and @color[IndianRed](delays their execution) until explicitly requested.
+@color[GoldenRod](capture) the intent of I/O on invocation and<br />
+@color[GoldenRod](delays) their execution until @color[IndianRed](explicitly requested)
 
 +++ 
 ## Embedded DSL
-- @color[GoldenRod](Language): a data structure that lazy capute I/O operations
-- @color[IndianRed](Interpreter): an *engine* that walk the tree and execute I/O operations
+- @color[GoldenRod](Language): a data structure that caputure I/O
+- @color[IndianRed](Interpreter): an *engine* that actually execute I/O
+
++++
+## Benefits
+@color[IndianRed](evidence code) that interact<br />
+with the outside world and even more important<br />
+@color[GoldenRod](preserves referential transparency)
 
 +++
 ## Again, which one have side-effects?
@@ -747,22 +636,12 @@ def sendMessages(/*...*/): IO[Unit]
 ```
 
 +++
-## Benefits
-@color[IndianRed](evidence code) that interact<br />
-with the outside world and even more important<br />
-@color[GoldenRod](preserves referential transparency)
-
-+++
-## @color[GoldenRod](Referential Trasparency)
-## means
-## @color[IndianRed](easier refactoring)
-
-+++
-## First example - @color[IndianRed](Future)
+## First example
+## @color[GoldenRod](Future)
 ## @color[IndianRed](NO) REFERENTIAL TRASPARENCY
 
 +++
-## Ask two numbers - @color[IndianRed](Future)
+## Ask two numbers
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
@@ -778,16 +657,17 @@ def program(): Future[Unit] =
   askTwoInt()
     .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[1-3](ask a number)
-@[5-9](execute askInt twice)
-@[11-13](execute the program)
+@[1](ask a number)
+@[5](ask two numbers)
+@[11-13](the program)
+@[5-9](look closely)
 
 +++
-## Output - @color[IndianRed](Future)
+## It works!
 <img align="center" src="assets/future-duplication.png">
 
 +++
-## First Refactoring - @color[IndianRed](Future)
+## First Refactoring
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
@@ -805,14 +685,14 @@ def program(): Future[Unit] =
   askTwoInt()
     .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[5-11](extract local)
+@[6,8-9](extract local and call it twice)
 
 +++
-## Output :-( - @color[IndianRed](Future)
+## Oh no! Bug!
 <img align="center" src="assets/future-refactored.png">
 
 +++
-## Second Refactoring - @color[IndianRed](Future)
+## Second Refactoring
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
@@ -831,18 +711,19 @@ def program(): Future[Unit] =
   askTwoInt()
     .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[5-12](extract local)
+@[6-7,9-10](extract two locals and call them both)
 
 +++
-## Output :-( - @color[IndianRed](Future)
+## WTF? Another bug!
 <img align="center" src="assets/future-refactored2.png">
 
 +++
-## Second example - @color[GoldenRod](IO)
-## @color[GoldenRod](YES) REFERENTIAL TRASPARENCY
+## Second example
+## @color[GoldenRod](IO MONAD)
+## @color[IndianRed](YES) REFERENTIAL TRASPARENCY
 
 +++
-## Ask two numbers - @color[GoldenRod](IO)
+## Same program
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
@@ -858,16 +739,13 @@ def program(): IO[Unit] =
   askTwoInt()
     .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[1-3](ask a number)
-@[5-9](execute askInt twice)
-@[11-13](execute the program)
 
 +++
-## Output - @color[GoldenRod](IO)
+## It works!
 <img align="center" src="assets/io-duplication.png">
 
 +++
-## First Refactoring - @color[GoldenRod](IO)
+## First Refactoring
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
@@ -885,14 +763,14 @@ def program(): IO[Unit] =
   askTwoInt()
     .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[5-11](extract local)
+@[6,8-9](extract local and call it twice)
 
 +++
-## Output :-) - @color[GoldenRod](IO)
+## It works!
 <img align="center" src="assets/io-refactored.png">
 
 +++
-## Second Refactoring - @color[GoldenRod](IO)
+## Second Refactoring
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
@@ -911,21 +789,11 @@ def program(): IO[Unit] =
   askTwoInt()
     .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[5-12](extract local)
+@[6-7,9-10](extract two locals and call them both)
 
 +++
-## Output :-) - @color[GoldenRod](IO)
-<img align="center" src="assets/io-refactored.png">
-
-+++
-## IO Monad complain
-this solution solves only the @color[GoldenRod](symptom)<br />
-but not the @color[IndianRed](disease) as I/O is impure by nature
-
-+++
-## My 2 cents 
-IO Monad is like a @color[GoldenRod](pimped Future)<br />
-so @color[IndianRed](why not use it)?
+## It works!
+<img align="center" src="assets/io-refactored2.png">
 
 +++
 ## IO Monad in Scala
@@ -963,7 +831,6 @@ private def loadLines(fileName: String): IO[List[String]] =
     IO(source.close)
   }
 ```
-@[2](bracket function)
 
 +++
 ## Compose with upper layer
@@ -994,7 +861,7 @@ private def sendMessage(smtpHost: String,
 @[3](see the IO wrapper?)
 
 +++
-## From execution of many I/O
+## Execution of many I/O
 ```scala
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
@@ -1005,7 +872,7 @@ private def sendMessages(smtpHost: String,
 ```
 
 +++
-## To construction of many IO
+## Construction of many IO
 ```scala
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
@@ -1017,6 +884,11 @@ private def sendMessages(smtpHost: String,
 ```
 @[4](from Employee to IO[Unit])
 @[3](List[IO[Unit]] it's not what we want)
+
++++
+## Map vs Traverse
+- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[A]])
+- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[A]])
 
 +++
 ## Traverse power!
@@ -1031,11 +903,6 @@ private def sendMessages(smtpHost: String,
 ```
 @[4](traversal over a structure with an effect)
 @[3](better but List of Unit is like Unit)
-
-+++
-## Map vs Traverse
-- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[A]])
-- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[A]])
 
 +++
 ## Discard results
@@ -1130,7 +997,7 @@ def main(args: Array[String]): Unit = {
     .unsafeRunSync()
 }
 ```
-@[3](add IO execution at "the end of the world")
+@[3](execute I/O at "the end of the world")
 
 ---
 # Split @color[GoldenRod](domain)
@@ -1139,10 +1006,6 @@ def main(args: Array[String]): Unit = {
 +++
 ## Now
 ![Now](assets/vision-status.png)
-
-+++
-## Final Vision
-![Vision](assets/vision-final.png)
 
 +++
 ## The Onion architecture pillar
@@ -1175,7 +1038,7 @@ def main(args: Array[String]): Unit = {
 ```
 
 +++
-## Split domain and infrastructure params
+## Split parameters
 ```scala
 def loadEmployees()
                  (fileName: String): IO[List[Employee]]
@@ -1342,7 +1205,7 @@ def main(args: Array[String]): Unit = {
 }
 ```
 @[2-5](mark provided values as implicit)
-@[7](remove explicit injection)
+@[7-8](remove explicit injection)
 
 +++
 ## Final implementation
@@ -1394,9 +1257,8 @@ test("will send greetings when its somebody's birthday") {
   assertEquals("john.doe@foobar.com", recipients(0).toString)
 }
 ```
-@[1-9](setup server smtp)
-@[10-13](setup infrastrucural adapters)
-@[18-25](complex asserts)
+@[1-7](setup server smtp)
+@[10-16](setup infrastrucural adapters)
 
 +++
 ## In memory acceptance tests
@@ -1420,7 +1282,7 @@ test("will send greetings when its somebody's birthday") {
 ```
 @[2-7](setup fake repository)
 @[8-9](setup fake gateway)
-@[12-13](execute usecase)
+@[11-12](execute usecase)
 @[14-15](simple asserts)
 
 +++
