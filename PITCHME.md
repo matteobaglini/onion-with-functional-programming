@@ -317,7 +317,7 @@ def sendGreetings(fileName: String,
 ![Vision](assets/vision-final.png)
 
 +++
-## Shopping list
+## Onion + Pure FP shopping list
 - split responsibilities in functions
     - push I/O at the boundary of the system
 - remove mutable variables
@@ -383,10 +383,9 @@ def sendGreetings(fileName: String // ...
   }
 }  
 ```
-@[5-12](one loop per responsibility)
-@[2,11,13](use local buffers)
-@[15-21](one loop per responsibility)
-@[23-34](one loop per responsibility)
+@[2-13](one loop to parse the file)
+@[15-21](one loop to filter employees)
+@[23-34](one loop to send messages)
 
 +++
 ## Extract functions
@@ -569,8 +568,6 @@ private def sendMessages(smtpHost: String,
   }
 }
 ```
-@[5](extract buildSession)
-@[6](extract buildMessage)
 
 +++
 ## Extract new sendMessage
@@ -624,8 +621,8 @@ def sendMessages(/*...*/): IO[Unit]
 
 +++
 ## First example
-## @color[GoldenRod](Future)
 ## @color[IndianRed](NO) REFERENTIAL TRASPARENCY
+## @color[GoldenRod](Future)
 
 +++
 ## Ask two numbers
@@ -647,19 +644,25 @@ def program(): Future[Unit] =
 @[1](ask a number)
 @[5](ask two numbers)
 @[11-13](the program)
-@[5-9](look closely)
 
 +++
 ## It works!
 <img align="center" src="assets/future-duplication.png">
 
 +++
+## Look closely
+```scala
+def askTwoInt(): Future[(Int, Int)] =
+  for {
+    x <- askInt()
+    y <- askInt()
+  } yield (x , y)
+```
+@[3-4](two sequential calls)
+
++++
 ## First Refactoring
 ```scala
-def askInt(): Future[Int] = 
-  Future(println("Please, give me a number:"))
-    .flatMap(_ => Future(io.StdIn.readLine().toInt))
-
 def askTwoInt(): Future[(Int, Int)] = {
   val sameAsk = askInt()
   for {
@@ -667,12 +670,8 @@ def askTwoInt(): Future[(Int, Int)] = {
     y <- sameAsk
   } yield (x , y)
 }
-
-def program(): Future[Unit] =
-  askTwoInt()
-    .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[6,8-9](extract local and call it twice)
+@[2,4-5](extract local and call it twice)
 
 +++
 ## Oh no! Bug!
@@ -681,10 +680,6 @@ def program(): Future[Unit] =
 +++
 ## Second Refactoring
 ```scala
-def askInt(): Future[Int] = 
-  Future(println("Please, give me a number:"))
-    .flatMap(_ => Future(io.StdIn.readLine().toInt))
-
 def askTwoInt(): Future[(Int, Int)] = {
   val ask1 = askInt()
   val ask2 = askInt()
@@ -693,12 +688,8 @@ def askTwoInt(): Future[(Int, Int)] = {
     y <- ask2
   } yield (x , y)
 }
-
-def program(): Future[Unit] =
-  askTwoInt()
-    .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[6-7,9-10](extract two locals and call them both)
+@[2-3,5-6](extract two locals and call them both)
 
 +++
 ## WTF? Another bug!
@@ -706,8 +697,8 @@ def program(): Future[Unit] =
 
 +++
 ## Second example
-## @color[GoldenRod](IO MONAD)
 ## @color[IndianRed](YES) REFERENTIAL TRASPARENCY
+## @color[GoldenRod](IO MONAD)
 
 +++
 ## Same program
@@ -728,16 +719,8 @@ def program(): IO[Unit] =
 ```
 
 +++
-## It works!
-<img align="center" src="assets/io-duplication.png">
-
-+++
-## First Refactoring
+## Same Refactoring
 ```scala
-def askInt(): IO[Int] = 
-  IO(println("Please, give me a number:"))
-    .flatMap(_ => IO(io.StdIn.readLine().toInt))
-
 def askTwoInt(): IO[(Int, Int)] = {
   val sameAsk = askInt()
   for {
@@ -745,24 +728,9 @@ def askTwoInt(): IO[(Int, Int)] = {
     y <- sameAsk
   } yield (x , y)
 }
-
-def program(): IO[Unit] =
-  askTwoInt()
-    .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[6,8-9](extract local and call it twice)
 
-+++
-## It works!
-<img align="center" src="assets/io-refactored.png">
-
-+++
-## Second Refactoring
 ```scala
-def askInt(): IO[Int] = 
-  IO(println("Please, give me a number:"))
-    .flatMap(_ => IO(io.StdIn.readLine().toInt))
-
 def askTwoInt(): IO[(Int, Int)] = {
   val ask1 = askInt()
   val ask2 = askInt()
@@ -771,16 +739,11 @@ def askTwoInt(): IO[(Int, Int)] = {
     y <- ask2
   } yield (x , y)
 }
-
-def program(): IO[Unit] =
-  askTwoInt()
-    .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[6-7,9-10](extract two locals and call them both)
 
 +++
 ## It works!
-<img align="center" src="assets/io-refactored2.png">
+<img align="center" src="assets/io-refactored.png">
 
 +++
 ## IO Monad in Scala
@@ -964,6 +927,10 @@ def main(args: Array[String]): Unit = {
 ![Now](assets/vision-status.png)
 
 +++
+## Final Vision
+![Vision](assets/vision-final.png)
+
++++
 ## The Onion architecture pillar
 <br />
 ### @color[GoldenRod](Dependency Inversion Principle)
@@ -1057,9 +1024,7 @@ trait MessageGateway {
 trait MessageGateway {
 
   def sendMessages(employees: List[Employee]): IO[Unit] =
-    employees.traverse_ { employee =>
-        sendMessage(smtpHost, smtpPort, employee)
-    }
+    employees.traverse_(employee => sendMessage(employee))
 
   def sendMessage(employee: Employee): IO[Unit]
 }
@@ -1090,7 +1055,7 @@ object SmtpMessageGateway {
 @[6-12](do the smtp related stuff)
 
 +++
-## Again, request the Port
+## Request Ports
 ```scala
 def sendGreetings(today: XDate)
                  (employeeRepository: EmployeeRepository,
@@ -1099,7 +1064,7 @@ def sendGreetings(today: XDate)
 @[2-3](no more file and smtp parameters)
 
 +++
-## Again, provide the Adapter
+## Provide Adapters
 ```scala
 def main(args: Array[String]): Unit = {
   val employeeRepository = 
