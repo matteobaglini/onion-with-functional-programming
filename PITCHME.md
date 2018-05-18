@@ -20,6 +20,7 @@ sauce
 by Matteo Vaccari
 <br /><br />
 https://github.com/xpmatteo/birthday-greetings-kata
+<br/>
 http://matteo.vaccari.name/blog/archives/154
 
 +++
@@ -201,28 +202,23 @@ val toS : Int => String = n => {
 @[4-5](return value depends from external state)
 
 +++
-## @color[IndianRed](Functions) must be
-## @color[GoldenRod](Referentially Transparent)
+## it's a @color[IndianRed](huge) constraint
+## @color[GoldenRod](why embrace it)?
+
++++
+## Get @color[GoldenRod](Referentially Transparent)
+## @color[IndianRed](Functions)
 
 +++
 > “Object-oriented programming makes code understandable by @color[GoldenRod](encapsulating moving parts).<br />Functional programming makes code understandable by @color[IndianRed](minimizing moving parts).”<br />— Michael Feathers
 
 +++
-## it's a @color[IndianRed](huge) constraint
-## @color[GoldenRod](why embrace it)?
-
-+++
-## Pure FP Benefits
-give you an @color[IndianRed](extraordinary boost) in terms of:
-- @color[GoldenRod](understandability)
-- @color[GoldenRod](composability)
-- @color[GoldenRod](testability)
-
-+++
-## Especially
-## @color[GoldenRod](Referential Trasparency)
-## means
-## @color[IndianRed](easier refactoring)
+## Purity Benefits
+code can get an @[IndianRed](extraordinary quality) boost, functions will be:
+- easier to @color[GoldenRod](reason)
+- easier to @color[GoldenRod](compose)
+- easier to @color[GoldenRod](refactor)
+- easier to @color[GoldenRod](test)
 
 +++
 > “Functional programming (pure or otherwise) @color[GoldenRod](isn't the goal) of software engineering.<br/ ><br />Rather, @color[IndianRed](it’s a means to an end), like every other tool in the bag of a software engineer.” <br />- John A De Goes 
