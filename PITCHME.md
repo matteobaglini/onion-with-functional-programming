@@ -396,7 +396,7 @@ def sendGreetings(fileName: String // ...
 ```
 
 +++
-## Actual status
+## Current status
 ![Status](assets/vision-status.png)
 
 --- 
@@ -551,7 +551,7 @@ private def sendMessages(smtpHost: String,
 @[22](final send)
 
 +++
-## Extract buildMessage
+## Extract functions
 ```scala
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
@@ -597,22 +597,29 @@ with the outside world and even more important<br />
 +++
 ## Which one have side-effects?
 ```scala
-def loadEmployees(/*...*/): List[Employee]
+def loadEmployees(/*...*/)
+        : List[Employee]
 
-def haveBirthday(/*...*/): List[Employee]
+def haveBirthday(/*...*/)
+        : List[Employee]
 
-def sendMessages(/*...*/): Unit
+def sendMessages(/*...*/)
+        : Unit
 ```
 
 +++
 ## Again, which one have side-effects?
 ```scala
-def loadEmployees(/*...*/): IO[List[Employee]]
+def loadEmployees(/*...*/)
+        : IO[List[Employee]]
 
-def haveBirthday(/*...*/): List[Employee]
+def haveBirthday(/*...*/)
+        : List[Employee]
 
-def sendMessages(/*...*/): IO[Unit]
+def sendMessages(/*...*/)
+        : IO[Unit]
 ```
+@[2,5,8](explicit return type)
 
 +++
 ## First example
@@ -755,6 +762,7 @@ private def loadLines(fileName: String): List[String] = {
   finally source.close
 }
 ```
+@[1](return List[String])
 +++
 ## Done!
 ```scala
@@ -764,17 +772,15 @@ private def loadLines(fileName: String): IO[List[String]] = IO {
   finally source.close
 }
 ```
-@[1](see the IO wrapper?)
+@[1](return IO[List[String]])
 
 +++
 ## Safe resource acquisition/release
 ```scala
 private def loadLines(fileName: String): IO[List[String]] =
-  IO(io.Source.fromFile(fileName)).bracket { source =>
-    IO(source.getLines.toList)
-  } { source =>
-    IO(source.close)
-  }
+  IO(io.Source.fromFile(fileName))
+    .bracket { source => IO(source.getLines.toList) } 
+             { source => IO(source.close) }
 ```
 
 +++
@@ -797,13 +803,26 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
 ```scala
 private def sendMessage(smtpHost: String,
                         smtpPort: Int,
+                        employee: Employee): Unit = {
+  val session = buildSession(smtpHost, smtpPort)
+  val msg = buildMessage(session, employee)
+  Transport.send(msg)
+}
+```
+@[3](return Unit)
+
++++
+## Wrap function expression
+```scala
+private def sendMessage(smtpHost: String,
+                        smtpPort: Int,
                         employee: Employee): IO[Unit] = IO {
   val session = buildSession(smtpHost, smtpPort)
   val msg = buildMessage(session, employee)
   Transport.send(msg)
 }
 ```
-@[3](see the IO wrapper?)
+@[3](return IO[Unit])
 
 +++
 ## Execution of many I/O
@@ -815,6 +834,7 @@ private def sendMessages(smtpHost: String,
     sendMessage(smtpHost, smtpPort, employee)
 }
 ```
+@[3](return Unit)
 
 +++
 ## Construction of many IO
@@ -832,8 +852,8 @@ private def sendMessages(smtpHost: String,
 
 +++
 ## Map vs Traverse
-- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[A]])
-- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[A]])
+- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[Unit]])
+- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[Unit]])
 
 +++
 ## Traverse power!
@@ -861,22 +881,21 @@ private def sendMessages(smtpHost: String,
 }
 ```
 @[4](discard results)
+@[3](perfect!)
 
 +++
-## Execute I/O (temporarily)
+## Use case
 ```scala
 def sendGreetings(fileName: String,
                   today: XDate,
                   smtpHost: String,
                   smtpPort: Int): Unit = {
   val loaded = loadEmployees(fileName)
-    .unsafeRunSync()
   val birthdays = haveBirthday(loaded, today)
   sendMessages(smtpHost, smtpPort, birthdays)
-    .unsafeRunSync()
 }
 ```
-@[6,9](must be removed)
+@[4](return Unit)
 
 +++
 ## Push up I/O execution
@@ -890,7 +909,7 @@ def sendGreetings(fileName: String,
     .flatMap(birthdays => sendMessages(smtpHost, smtpPort, birthdays))
 }
 ```
-@[4](add IO wrapper)
+@[4](return IO[Unit])
 @[5]("register" a loadEmployees operations)
 @[6](then change the content with map)
 @[7](then replace the content with flatMap)
@@ -1024,8 +1043,8 @@ trait MessageGateway {
   def sendMessage(employee: Employee): IO[Unit]
 }
 ```
-@[3-6](thanks to traverse we can put the implementation here)
-@[8](and open sendMessage)
+@[3-4](thanks to traverse we can put the implementation here)
+@[6](and open sendMessage)
 
 +++
 ## Implement the second Adapter
@@ -1109,8 +1128,8 @@ def sendGreetings(today: XDate)
   employeeRepository
     .loadEmployees(fileName)
     .map(loaded => haveBirthday(loaded, today))
-    .flatMap(birthdays => messageGateway
-                            .sendMessages(smtpHost, smtpPort, birthdays))
+    .flatMap(birthdays => 
+        messageGateway.sendMessages(smtpHost, smtpPort, birthdays))
 ```
 
 ---
