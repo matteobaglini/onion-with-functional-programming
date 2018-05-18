@@ -212,7 +212,7 @@ val toS : Int => String = n => {
 
 +++
 ## Purity Benefits
-functions can get an @color[IndianRed](extraordinary quality) boost:
+functions get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](reason)
 - easier to @color[GoldenRod](compose)
 - easier to @color[GoldenRod](refactor)
@@ -394,9 +394,6 @@ def sendGreetings(fileName: String // ...
   sendMessages(smtpHost, smtpPort, birthdays)
 }
 ```
-@[2](extract loadEmployees)
-@[3](extract haveBirthday)
-@[4](extract sendMessages)
 
 +++
 ## Actual status
