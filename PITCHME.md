@@ -591,16 +591,6 @@ private def sendMessages(smtpHost: String,
 # Handle @color[IndianRed](side-effects)
 
 +++
-## Which one have side-effects?
-```scala
-def loadEmployees(/*...*/): List[Employee]
-
-def haveBirthday(/*...*/): List[Employee]
-
-def sendMessages(/*...*/): Unit
-```
-
-+++
 ## How to @color[GoldenRod](handle I/O) in pure fp?
 
 +++
@@ -618,6 +608,16 @@ def sendMessages(/*...*/): Unit
 @color[IndianRed](evidence code) that interact<br />
 with the outside world and even more important<br />
 @color[GoldenRod](preserves referential transparency)
+
++++
+## Which one have side-effects?
+```scala
+def loadEmployees(/*...*/): List[Employee]
+
+def haveBirthday(/*...*/): List[Employee]
+
+def sendMessages(/*...*/): Unit
+```
 
 +++
 ## Again, which one have side-effects?
