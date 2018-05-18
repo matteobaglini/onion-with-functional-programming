@@ -1219,37 +1219,28 @@ def sendGreetings(today: XDate)
 # @color[GoldenRod](Acceptance tests) w/out @color[IndianRed](infrastructure)
 
 +++
-## Starting point
+## Test adapters
 ```scala
-def setup(): SimpleSmtpServer = {
-  SimpleSmtpServer.start(NONSTANDARD_PORT)
+class FakeEmployeeRepository(employees: List[Employee]) 
+    extends EmployeeRepository {
+
+  def loadEmployees(): IO[List[Employee]] = IO {
+    employees
+  }
 }
 
-def tearDown(mailServer: SimpleSmtpServer): Unit = {
-  mailServer.stop()
-}
+class FakeMessageGateway 
+    extends MessageGateway {
 
-test("will send greetings when its somebody's birthday") {
-  implicit val employeeRepository =
-    FlatFileEmployeeRepository.fromFile("employee_data.txt")
-  implicit val messageGateway =
-    SmtpMessageGateway.fromEndpoint("localhost", NONSTANDARD_PORT)
+  val receivers = new collection.mutable.ListBuffer[Employee]
 
-  sendGreetings(XDate("2008/10/08"))
-    .unsafeRunSync()
-
-  assert(mailServer.getReceivedEmailSize == 1, "message not sent?")
-  val message = mailServer.getReceivedEmail()
-                    .next().asInstanceOf[SmtpMessage]
-  assertEquals("Happy Birthday, dear John!", message.getBody)
-  assertEquals("Happy Birthday!", message.getHeaderValue("Subject"))
-  val recipients = message.getHeaderValues("To")
-  assertEquals(1, recipients.length)
-  assertEquals("john.doe@foobar.com", recipients(0).toString)
+  def sendMessage(e: Employee): IO[Unit] = IO {
+    receivers += e
+  }
 }
 ```
-@[1-7](setup server smtp)
-@[10-16](setup infrastrucural adapters)
+@[1-7](fake repository)
+@[9-17](fake gateway)
 
 +++
 ## In memory acceptance tests
@@ -1275,30 +1266,6 @@ test("will send greetings when its somebody's birthday") {
 @[8-9](setup fake gateway)
 @[11-12](execute usecase)
 @[14-15](simple asserts)
-
-+++
-## Test doubles implementation
-```scala
-class FakeEmployeeRepository(employees: List[Employee]) 
-    extends EmployeeRepository {
-
-  def loadEmployees(): IO[List[Employee]] = IO {
-    employees
-  }
-}
-
-class FakeMessageGateway 
-    extends MessageGateway {
-
-  val receivers = new collection.mutable.ListBuffer[Employee]
-
-  def sendMessage(e: Employee): IO[Unit] = IO {
-    receivers += e
-  }
-}
-```
-@[1-7](fake repository)
-@[9-17](fake gateway)
 
 ---
 # Closing notes
