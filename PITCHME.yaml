@@ -1,3 +1,4 @@
 theme : moon
 highlight : dracula
 theme-override : assets/css/PITCHME.css
+published : true
