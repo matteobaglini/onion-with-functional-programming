@@ -591,9 +591,6 @@ private def sendMessages(smtpHost: String,
 # Handle @color[IndianRed](side-effects)
 
 +++
-## How to @color[GoldenRod](handle I/O) in pure fp?
-
-+++
 ## IO Monad
 @color[GoldenRod](capture) the intent of I/O on invocation and<br />
 @color[GoldenRod](delays) their execution until @color[IndianRed](explicitly requested)
