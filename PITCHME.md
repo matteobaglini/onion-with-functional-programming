@@ -212,7 +212,7 @@ val toS : Int => String = n => {
 
 +++
 ## Purity Benefits
-code can get an @color[IndianRed](extraordinary quality) boost, functions will be:
+functions can get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](reason)
 - easier to @color[GoldenRod](compose)
 - easier to @color[GoldenRod](refactor)
