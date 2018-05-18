@@ -211,11 +211,8 @@ val toS : Int => String = n => {
 ## @color[IndianRed](Functions)
 
 +++
-> “Object-oriented programming makes code understandable by @color[GoldenRod](encapsulating moving parts).<br />Functional programming makes code understandable by @color[IndianRed](minimizing moving parts).”<br />— Michael Feathers
-
-+++
 ## Purity Benefits
-code can get an @[IndianRed](extraordinary quality) boost, functions will be:
+code can get an @color[IndianRed](extraordinary quality) boost, functions will be:
 - easier to @color[GoldenRod](reason)
 - easier to @color[GoldenRod](compose)
 - easier to @color[GoldenRod](refactor)
