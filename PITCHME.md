@@ -24,16 +24,16 @@ https://github.com/xpmatteo/birthday-greetings-kata
 http://matteo.vaccari.name/blog/archives/154
 
 +++
-## @color[IndianRed](Scala) Porting
-by Me :-)
-<br /><br />
-https://github.com/matteobaglini/birthday-greetings-kata-scala
-
-+++
 ## @color[GoldenRod](Kata Purpose)
 <br />
 ### To @color[IndianRed](learn) about
 ### the ~~hexagonal~~ onion architecture
+
++++
+## @color[IndianRed](Scala) Porting
+by Me :-)
+<br /><br />
+https://github.com/matteobaglini/birthday-greetings-kata-scala
 
 +++
 ## Problem
