@@ -632,7 +632,7 @@ def sendMessages(/*...*/): IO[Unit]
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
-    .flatMap( _ => Future(io.StdIn.readLine().toInt))
+    .flatMap(_ => Future(io.StdIn.readLine().toInt))
 
 def askTwoInt(): Future[(Int, Int)] =
   for {
@@ -658,7 +658,7 @@ def program(): Future[Unit] =
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
-    .flatMap( _ => Future(io.StdIn.readLine().toInt))
+    .flatMap(_ => Future(io.StdIn.readLine().toInt))
 
 def askTwoInt(): Future[(Int, Int)] = {
   val sameAsk = askInt()
@@ -683,7 +683,7 @@ def program(): Future[Unit] =
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
-    .flatMap( _ => Future(io.StdIn.readLine().toInt))
+    .flatMap(_ => Future(io.StdIn.readLine().toInt))
 
 def askTwoInt(): Future[(Int, Int)] = {
   val ask1 = askInt()
@@ -714,7 +714,7 @@ def program(): Future[Unit] =
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
-    .flatMap( _ => IO(io.StdIn.readLine().toInt))
+    .flatMap(_ => IO(io.StdIn.readLine().toInt))
 
 def askTwoInt(): IO[(Int, Int)] =
   for {
@@ -736,7 +736,7 @@ def program(): IO[Unit] =
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
-    .flatMap( _ => IO(io.StdIn.readLine().toInt))
+    .flatMap(_ => IO(io.StdIn.readLine().toInt))
 
 def askTwoInt(): IO[(Int, Int)] = {
   val sameAsk = askInt()
@@ -761,7 +761,7 @@ def program(): IO[Unit] =
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
-    .flatMap( _ => IO(io.StdIn.readLine().toInt))
+    .flatMap(_ => IO(io.StdIn.readLine().toInt))
 
 def askTwoInt(): IO[(Int, Int)] = {
   val ask1 = askInt()
@@ -826,7 +826,7 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
   loadLines(fileName).map { lines =>
     lines
       .drop(1) // skip header
-      .map(parseEmployee(_))
+      .map(line => parse(line))
   }
 }
 ```
@@ -897,21 +897,6 @@ private def sendMessages(smtpHost: String,
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): IO[Unit] = {
-  employees.traverse { employee =>
-    sendMessage(smtpHost, smtpPort, employee)
-  }
-  .map { _ => () }
-}
-```
-@[7](discard results)
-@[3](perfect type)
-
-+++
-## Discard results (compact)
-```scala
-private def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): IO[Unit] = {
   employees.traverse_ { employee =>
     sendMessage(smtpHost, smtpPort, employee)
   }
@@ -951,22 +936,6 @@ def sendGreetings(fileName: String,
 @[5]("register" a loadEmployees operations)
 @[6](then change the content with map)
 @[7](then replace the content with flatMap)
-
-+++
-## Hide composition operators
-```scala
-def sendGreetings(fileName: String,
-                  today: XDate,
-                  smtpHost: String,
-                  smtpPort: Int): IO[Unit] = {
-  for {
-    loaded <- loadEmployees(fileName)
-    birthdays = haveBirthday(loaded, today)
-    _ <- sendMessages(smtpHost, smtpPort, birthdays)
-  } yield ()
-}
-```
-@[5-9](use for-comprehension)
 
 +++
 ## The original Main
@@ -1075,31 +1044,6 @@ object FlatFileEmployeeRepository {
 @[6-12](do the file related stuff)
 
 +++
-## Request the Port
-```scala
-def sendGreetings(today: XDate)
-                 (employeeRepository: EmployeeRepository, 
-                  smtpHost: String, 
-                  smtpPort: Int): IO[Unit]
-```
-@[2](no more file parameter)
-
-+++
-## Provide the Adapter
-```scala
-def main(args: Array[String]): Unit = {
-  val employeeRepository = 
-        FlatFileEmployeeRepository.fromFile("employee_data.txt")
-
-  sendGreetings(XDate())
-    (employeeRepository, "localhost", 25)
-    .unsafeRunSync()
-}
-```
-@[2-3](build the concrete adapter)
-@[6](inject into sendGreetings)
-
-+++
 ## Define the second Port
 ```scala
 trait MessageGateway {
@@ -1113,13 +1057,15 @@ trait MessageGateway {
 trait MessageGateway {
 
   def sendMessages(employees: List[Employee]): IO[Unit] =
-    employees.traverse_(sendMessage(_))
+    employees.traverse_ { employee =>
+        sendMessage(smtpHost, smtpPort, employee)
+    }
 
   def sendMessage(employee: Employee): IO[Unit]
 }
 ```
-@[3-4](thanks to traverse we can put the implementation here)
-@[6](and open sendMessage)
+@[3-6](thanks to traverse we can put the implementation here)
+@[8](and open sendMessage)
 
 +++
 ## Implement the second Adapter
@@ -1150,7 +1096,7 @@ def sendGreetings(today: XDate)
                  (employeeRepository: EmployeeRepository,
                   messageGateway: MessageGateway): IO[Unit]
 ```
-@[3](no more smtp parameters)
+@[2-3](no more file and smtp parameters)
 
 +++
 ## Again, provide the Adapter
@@ -1166,7 +1112,7 @@ def main(args: Array[String]): Unit = {
     .unsafeRunSync()
 }
 ```
-@[4-5](build the concrete adapter)
+@[2-5](build the concrete adapters)
 @[8](inject into sendGreetings)
 
 +++
@@ -1200,16 +1146,12 @@ def main(args: Array[String]): Unit = {
 def sendGreetings(today: XDate)
                  (implicit employeeRepository: EmployeeRepository, 
                            messageGateway: MessageGateway): IO[Unit] =
-  for {
-    loaded <- employeeRepository.loadEmployees(fileName)
-    birthdays = haveBirthday(loaded, today)
-    _ <- messageGateway.sendMessages(smtpHost, smtpPort, birthdays)
-  } yield ()
+  employeeRepository
+    .loadEmployees(fileName)
+    .map(loaded => haveBirthday(loaded, today))
+    .flatMap(birthdays => messageGateway
+                            .sendMessages(smtpHost, smtpPort, birthdays))
 ```
-
-+++
-## Final implementation
-![Vision](assets/vision-final.png)
 
 ---
 # @color[GoldenRod](Acceptance tests) w/out @color[IndianRed](infrastructure)
@@ -1236,6 +1178,7 @@ class FakeMessageGateway
 }
 ```
 @[1-7](fake repository)
+@[4-6](lift value into IO)
 @[9-17](fake gateway)
 
 +++
