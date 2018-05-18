@@ -112,7 +112,7 @@ def sendGreetings(fileName: String,
 <img align="center" src="assets/tests.PNG">
 
 +++ 
-## But they @color[GoldenRod](test only)
+## they @color[GoldenRod](test only)
 ## at @color[IndianRed](system level)
 
 +++
@@ -206,7 +206,8 @@ val toS : Int => String = n => {
 ## @color[GoldenRod](why embrace it)?
 
 +++
-## Get @color[GoldenRod](Referentially Transparent)
+## Get
+## @color[GoldenRod](Referentially Transparent)
 ## @color[IndianRed](Functions)
 
 +++
