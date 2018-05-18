@@ -24,19 +24,20 @@ sauce
 by Matteo Vaccari
 <br /><br />
 https://github.com/xpmatteo/birthday-greetings-kata
+<br/>
 http://matteo.vaccari.name/blog/archives/154
-
-+++
-## @color[IndianRed](Scala) Porting
-by Me :-)
-<br /><br />
-https://github.com/matteobaglini/birthday-greetings-kata-scala
 
 +++
 ## @color[GoldenRod](Kata Purpose)
 <br />
 ### To @color[IndianRed](learn) about
 ### the ~~hexagonal~~ onion architecture
+
++++
+## @color[IndianRed](Scala) Porting
+by Me :-)
+<br /><br />
+https://github.com/matteobaglini/birthday-greetings-kata-scala
 
 +++
 ## Problem
@@ -115,7 +116,7 @@ def sendGreetings(fileName: String,
 <img align="center" src="assets/tests.PNG">
 
 +++ 
-## But they @color[GoldenRod](test only)
+## they @color[GoldenRod](test only)
 ## at @color[IndianRed](system level)
 
 +++
@@ -205,28 +206,21 @@ val toS : Int => String = n => {
 @[4-5](return value depends from external state)
 
 +++
-## @color[IndianRed](Functions) must be
-## @color[GoldenRod](Referentially Transparent)
-
-+++
-> “Object-oriented programming makes code understandable by @color[GoldenRod](encapsulating moving parts).<br />Functional programming makes code understandable by @color[IndianRed](minimizing moving parts).”<br />— Michael Feathers
-
-+++
 ## it's a @color[IndianRed](huge) constraint
 ## @color[GoldenRod](why embrace it)?
 
 +++
-## Pure FP Benefits
-give you an @color[IndianRed](extraordinary boost) in terms of:
-- @color[GoldenRod](understandability)
-- @color[GoldenRod](composability)
-- @color[GoldenRod](testability)
+## Get
+## @color[GoldenRod](Referentially Transparent)
+## @color[IndianRed](Functions)
 
 +++
-## Especially
-## @color[GoldenRod](Referential Trasparency)
-## means
-## @color[IndianRed](easier refactoring)
+## Purity Benefits
+functions get an @color[IndianRed](extraordinary quality) boost:
+- easier to @color[GoldenRod](reason)
+- easier to @color[GoldenRod](compose)
+- easier to @color[GoldenRod](refactor)
+- easier to @color[GoldenRod](test)
 
 +++
 > “Functional programming (pure or otherwise) @color[GoldenRod](isn't the goal) of software engineering.<br/ ><br />Rather, @color[IndianRed](it’s a means to an end), like every other tool in the bag of a software engineer.” <br />- John A De Goes 
@@ -325,7 +319,7 @@ def sendGreetings(fileName: String,
 ![Vision](assets/vision-final.png)
 
 +++
-## Shopping list
+## Onion + Pure FP shopping list
 - split responsibilities in functions
     - push I/O at the boundary of the system
 - remove mutable variables
@@ -391,10 +385,9 @@ def sendGreetings(fileName: String // ...
   }
 }  
 ```
-@[5-12](one loop per responsibility)
-@[2,11,13](use local buffers)
-@[15-21](one loop per responsibility)
-@[23-34](one loop per responsibility)
+@[2-13](one loop to parse the file)
+@[15-21](one loop to filter employees)
+@[23-34](one loop to send messages)
 
 +++
 ## Extract functions
@@ -405,12 +398,9 @@ def sendGreetings(fileName: String // ...
   sendMessages(smtpHost, smtpPort, birthdays)
 }
 ```
-@[2](extract loadEmployees)
-@[3](extract haveBirthday)
-@[4](extract sendMessages)
 
 +++
-## Actual status
+## Current status
 ![Status](assets/vision-status.png)
 
 --- 
@@ -565,7 +555,7 @@ private def sendMessages(smtpHost: String,
 @[22](final send)
 
 +++
-## Extract buildMessage
+## Extract functions
 ```scala
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
@@ -577,8 +567,6 @@ private def sendMessages(smtpHost: String,
   }
 }
 ```
-@[5](extract buildSession)
-@[6](extract buildMessage)
 
 +++
 ## Extract new sendMessage
@@ -613,34 +601,41 @@ with the outside world and even more important<br />
 +++
 ## Which one have side-effects?
 ```scala
-def loadEmployees(/*...*/): List[Employee]
+def loadEmployees(/*...*/)
+        : List[Employee]
 
-def haveBirthday(/*...*/): List[Employee]
+def haveBirthday(/*...*/)
+        : List[Employee]
 
-def sendMessages(/*...*/): Unit
+def sendMessages(/*...*/)
+        : Unit
 ```
 
 +++
 ## Again, which one have side-effects?
 ```scala
-def loadEmployees(/*...*/): IO[List[Employee]]
+def loadEmployees(/*...*/)
+        : IO[List[Employee]]
 
-def haveBirthday(/*...*/): List[Employee]
+def haveBirthday(/*...*/)
+        : List[Employee]
 
-def sendMessages(/*...*/): IO[Unit]
+def sendMessages(/*...*/)
+        : IO[Unit]
 ```
+@[2,5,8](explicit return type)
 
 +++
 ## First example
-## @color[GoldenRod](Future)
 ## @color[IndianRed](NO) REFERENTIAL TRASPARENCY
+## @color[GoldenRod](Future)
 
 +++
 ## Ask two numbers
 ```scala
 def askInt(): Future[Int] = 
   Future(println("Please, give me a number:"))
-    .flatMap( _ => Future(io.StdIn.readLine().toInt))
+    .flatMap(_ => Future(io.StdIn.readLine().toInt))
 
 def askTwoInt(): Future[(Int, Int)] =
   for {
@@ -655,19 +650,25 @@ def program(): Future[Unit] =
 @[1](ask a number)
 @[5](ask two numbers)
 @[11-13](the program)
-@[5-9](look closely)
 
 +++
 ## It works!
 <img align="center" src="assets/future-duplication.png">
 
 +++
+## Look closely
+```scala
+def askTwoInt(): Future[(Int, Int)] =
+  for {
+    x <- askInt()
+    y <- askInt()
+  } yield (x , y)
+```
+@[3-4](two sequential calls)
+
++++
 ## First Refactoring
 ```scala
-def askInt(): Future[Int] = 
-  Future(println("Please, give me a number:"))
-    .flatMap( _ => Future(io.StdIn.readLine().toInt))
-
 def askTwoInt(): Future[(Int, Int)] = {
   val sameAsk = askInt()
   for {
@@ -675,12 +676,8 @@ def askTwoInt(): Future[(Int, Int)] = {
     y <- sameAsk
   } yield (x , y)
 }
-
-def program(): Future[Unit] =
-  askTwoInt()
-    .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[6,8-9](extract local and call it twice)
+@[2,4-5](extract local and call it twice)
 
 +++
 ## Oh no! Bug!
@@ -689,10 +686,6 @@ def program(): Future[Unit] =
 +++
 ## Second Refactoring
 ```scala
-def askInt(): Future[Int] = 
-  Future(println("Please, give me a number:"))
-    .flatMap( _ => Future(io.StdIn.readLine().toInt))
-
 def askTwoInt(): Future[(Int, Int)] = {
   val ask1 = askInt()
   val ask2 = askInt()
@@ -701,12 +694,8 @@ def askTwoInt(): Future[(Int, Int)] = {
     y <- ask2
   } yield (x , y)
 }
-
-def program(): Future[Unit] =
-  askTwoInt()
-    .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[6-7,9-10](extract two locals and call them both)
+@[2-3,5-6](extract two locals and call them both)
 
 +++
 ## WTF? Another bug!
@@ -714,15 +703,15 @@ def program(): Future[Unit] =
 
 +++
 ## Second example
-## @color[GoldenRod](IO MONAD)
 ## @color[IndianRed](YES) REFERENTIAL TRASPARENCY
+## @color[GoldenRod](IO MONAD)
 
 +++
 ## Same program
 ```scala
 def askInt(): IO[Int] = 
   IO(println("Please, give me a number:"))
-    .flatMap( _ => IO(io.StdIn.readLine().toInt))
+    .flatMap(_ => IO(io.StdIn.readLine().toInt))
 
 def askTwoInt(): IO[(Int, Int)] =
   for {
@@ -736,16 +725,8 @@ def program(): IO[Unit] =
 ```
 
 +++
-## It works!
-<img align="center" src="assets/io-duplication.png">
-
-+++
-## First Refactoring
+## Same Refactoring
 ```scala
-def askInt(): IO[Int] = 
-  IO(println("Please, give me a number:"))
-    .flatMap( _ => IO(io.StdIn.readLine().toInt))
-
 def askTwoInt(): IO[(Int, Int)] = {
   val sameAsk = askInt()
   for {
@@ -753,24 +734,9 @@ def askTwoInt(): IO[(Int, Int)] = {
     y <- sameAsk
   } yield (x , y)
 }
-
-def program(): IO[Unit] =
-  askTwoInt()
-    .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[6,8-9](extract local and call it twice)
 
-+++
-## It works!
-<img align="center" src="assets/io-refactored.png">
-
-+++
-## Second Refactoring
 ```scala
-def askInt(): IO[Int] = 
-  IO(println("Please, give me a number:"))
-    .flatMap( _ => IO(io.StdIn.readLine().toInt))
-
 def askTwoInt(): IO[(Int, Int)] = {
   val ask1 = askInt()
   val ask2 = askInt()
@@ -779,16 +745,11 @@ def askTwoInt(): IO[(Int, Int)] = {
     y <- ask2
   } yield (x , y)
 }
-
-def program(): IO[Unit] =
-  askTwoInt()
-    .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
-@[6-7,9-10](extract two locals and call them both)
 
 +++
 ## It works!
-<img align="center" src="assets/io-refactored2.png">
+<img align="center" src="assets/io-refactored.png">
 
 +++
 ## IO Monad in Scala
@@ -805,6 +766,7 @@ private def loadLines(fileName: String): List[String] = {
   finally source.close
 }
 ```
+@[1](return List[String])
 +++
 ## Done!
 ```scala
@@ -814,17 +776,15 @@ private def loadLines(fileName: String): IO[List[String]] = IO {
   finally source.close
 }
 ```
-@[1](see the IO wrapper?)
+@[1](return IO[List[String]])
 
 +++
 ## Safe resource acquisition/release
 ```scala
 private def loadLines(fileName: String): IO[List[String]] =
-  IO(io.Source.fromFile(fileName)).bracket { source =>
-    IO(source.getLines.toList)
-  } { source =>
-    IO(source.close)
-  }
+  IO(io.Source.fromFile(fileName))
+    .bracket { source => IO(source.getLines.toList) } 
+             { source => IO(source.close) }
 ```
 
 +++
@@ -834,7 +794,7 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
   loadLines(fileName).map { lines =>
     lines
       .drop(1) // skip header
-      .map(parseEmployee(_))
+      .map(line => parse(line))
   }
 }
 ```
@@ -847,13 +807,26 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
 ```scala
 private def sendMessage(smtpHost: String,
                         smtpPort: Int,
+                        employee: Employee): Unit = {
+  val session = buildSession(smtpHost, smtpPort)
+  val msg = buildMessage(session, employee)
+  Transport.send(msg)
+}
+```
+@[3](return Unit)
+
++++
+## Wrap function expression
+```scala
+private def sendMessage(smtpHost: String,
+                        smtpPort: Int,
                         employee: Employee): IO[Unit] = IO {
   val session = buildSession(smtpHost, smtpPort)
   val msg = buildMessage(session, employee)
   Transport.send(msg)
 }
 ```
-@[3](see the IO wrapper?)
+@[3](return IO[Unit])
 
 +++
 ## Execution of many I/O
@@ -865,6 +838,7 @@ private def sendMessages(smtpHost: String,
     sendMessage(smtpHost, smtpPort, employee)
 }
 ```
+@[3](return Unit)
 
 +++
 ## Construction of many IO
@@ -882,8 +856,8 @@ private def sendMessages(smtpHost: String,
 
 +++
 ## Map vs Traverse
-- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[A]])
-- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[A]])
+- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[Unit]])
+- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[Unit]])
 
 +++
 ## Traverse power!
@@ -905,43 +879,27 @@ private def sendMessages(smtpHost: String,
 private def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): IO[Unit] = {
-  employees.traverse { employee =>
-    sendMessage(smtpHost, smtpPort, employee)
-  }
-  .map { _ => () }
-}
-```
-@[7](discard results)
-@[3](perfect type)
-
-+++
-## Discard results (compact)
-```scala
-private def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): IO[Unit] = {
   employees.traverse_ { employee =>
     sendMessage(smtpHost, smtpPort, employee)
   }
 }
 ```
 @[4](discard results)
+@[3](perfect!)
 
 +++
-## Execute I/O (temporarily)
+## Use case
 ```scala
 def sendGreetings(fileName: String,
                   today: XDate,
                   smtpHost: String,
                   smtpPort: Int): Unit = {
   val loaded = loadEmployees(fileName)
-    .unsafeRunSync()
   val birthdays = haveBirthday(loaded, today)
   sendMessages(smtpHost, smtpPort, birthdays)
-    .unsafeRunSync()
 }
 ```
-@[6,9](must be removed)
+@[4](return Unit)
 
 +++
 ## Push up I/O execution
@@ -955,26 +913,10 @@ def sendGreetings(fileName: String,
     .flatMap(birthdays => sendMessages(smtpHost, smtpPort, birthdays))
 }
 ```
-@[4](add IO wrapper)
+@[4](return IO[Unit])
 @[5]("register" a loadEmployees operations)
 @[6](then change the content with map)
 @[7](then replace the content with flatMap)
-
-+++
-## Hide composition operators
-```scala
-def sendGreetings(fileName: String,
-                  today: XDate,
-                  smtpHost: String,
-                  smtpPort: Int): IO[Unit] = {
-  for {
-    loaded <- loadEmployees(fileName)
-    birthdays = haveBirthday(loaded, today)
-    _ <- sendMessages(smtpHost, smtpPort, birthdays)
-  } yield ()
-}
-```
-@[5-9](use for-comprehension)
 
 +++
 ## The original Main
@@ -1001,6 +943,10 @@ def main(args: Array[String]): Unit = {
 +++
 ## Now
 ![Now](assets/vision-status.png)
+
++++
+## Final Vision
+![Vision](assets/vision-final.png)
 
 +++
 ## The Onion architecture pillar
@@ -1083,31 +1029,6 @@ object FlatFileEmployeeRepository {
 @[6-12](do the file related stuff)
 
 +++
-## Request the Port
-```scala
-def sendGreetings(today: XDate)
-                 (employeeRepository: EmployeeRepository, 
-                  smtpHost: String, 
-                  smtpPort: Int): IO[Unit]
-```
-@[2](no more file parameter)
-
-+++
-## Provide the Adapter
-```scala
-def main(args: Array[String]): Unit = {
-  val employeeRepository = 
-        FlatFileEmployeeRepository.fromFile("employee_data.txt")
-
-  sendGreetings(XDate())
-    (employeeRepository, "localhost", 25)
-    .unsafeRunSync()
-}
-```
-@[2-3](build the concrete adapter)
-@[6](inject into sendGreetings)
-
-+++
 ## Define the second Port
 ```scala
 trait MessageGateway {
@@ -1121,7 +1042,7 @@ trait MessageGateway {
 trait MessageGateway {
 
   def sendMessages(employees: List[Employee]): IO[Unit] =
-    employees.traverse_(sendMessage(_))
+    employees.traverse_(employee => sendMessage(employee))
 
   def sendMessage(employee: Employee): IO[Unit]
 }
@@ -1152,16 +1073,16 @@ object SmtpMessageGateway {
 @[6-12](do the smtp related stuff)
 
 +++
-## Again, request the Port
+## Request Ports
 ```scala
 def sendGreetings(today: XDate)
                  (employeeRepository: EmployeeRepository,
                   messageGateway: MessageGateway): IO[Unit]
 ```
-@[3](no more smtp parameters)
+@[2-3](no more file and smtp parameters)
 
 +++
-## Again, provide the Adapter
+## Provide Adapters
 ```scala
 def main(args: Array[String]): Unit = {
   val employeeRepository = 
@@ -1174,7 +1095,7 @@ def main(args: Array[String]): Unit = {
     .unsafeRunSync()
 }
 ```
-@[4-5](build the concrete adapter)
+@[2-5](build the concrete adapters)
 @[8](inject into sendGreetings)
 
 +++
@@ -1208,52 +1129,40 @@ def main(args: Array[String]): Unit = {
 def sendGreetings(today: XDate)
                  (implicit employeeRepository: EmployeeRepository, 
                            messageGateway: MessageGateway): IO[Unit] =
-  for {
-    loaded <- employeeRepository.loadEmployees(fileName)
-    birthdays = haveBirthday(loaded, today)
-    _ <- messageGateway.sendMessages(smtpHost, smtpPort, birthdays)
-  } yield ()
+  employeeRepository
+    .loadEmployees(fileName)
+    .map(loaded => haveBirthday(loaded, today))
+    .flatMap(birthdays => 
+        messageGateway.sendMessages(smtpHost, smtpPort, birthdays))
 ```
-
-+++
-## Final implementation
-![Vision](assets/vision-final.png)
 
 ---
 # @color[GoldenRod](Acceptance tests) w/out @color[IndianRed](infrastructure)
 
 +++
-## Starting point
+## Test adapters
 ```scala
-def setup(): SimpleSmtpServer = {
-  SimpleSmtpServer.start(NONSTANDARD_PORT)
+class FakeEmployeeRepository(employees: List[Employee]) 
+    extends EmployeeRepository {
+
+  def loadEmployees(): IO[List[Employee]] = IO {
+    employees
+  }
 }
 
-def tearDown(mailServer: SimpleSmtpServer): Unit = {
-  mailServer.stop()
-}
+class FakeMessageGateway 
+    extends MessageGateway {
 
-test("will send greetings when its somebody's birthday") {
-  implicit val employeeRepository =
-    FlatFileEmployeeRepository.fromFile("employee_data.txt")
-  implicit val messageGateway =
-    SmtpMessageGateway.fromEndpoint("localhost", NONSTANDARD_PORT)
+  val receivers = new collection.mutable.ListBuffer[Employee]
 
-  sendGreetings(XDate("2008/10/08"))
-    .unsafeRunSync()
-
-  assert(mailServer.getReceivedEmailSize == 1, "message not sent?")
-  val message = mailServer.getReceivedEmail()
-                    .next().asInstanceOf[SmtpMessage]
-  assertEquals("Happy Birthday, dear John!", message.getBody)
-  assertEquals("Happy Birthday!", message.getHeaderValue("Subject"))
-  val recipients = message.getHeaderValues("To")
-  assertEquals(1, recipients.length)
-  assertEquals("john.doe@foobar.com", recipients(0).toString)
+  def sendMessage(e: Employee): IO[Unit] = IO {
+    receivers += e
+  }
 }
 ```
-@[1-7](setup server smtp)
-@[10-16](setup infrastrucural adapters)
+@[1-7](fake repository)
+@[4-6](lift value into IO)
+@[9-17](fake gateway)
 
 +++
 ## In memory acceptance tests
@@ -1279,30 +1188,6 @@ test("will send greetings when its somebody's birthday") {
 @[8-9](setup fake gateway)
 @[11-12](execute usecase)
 @[14-15](simple asserts)
-
-+++
-## Test doubles implementation
-```scala
-class FakeEmployeeRepository(employees: List[Employee]) 
-    extends EmployeeRepository {
-
-  def loadEmployees(): IO[List[Employee]] = IO {
-    employees
-  }
-}
-
-class FakeMessageGateway 
-    extends MessageGateway {
-
-  val receivers = new collection.mutable.ListBuffer[Employee]
-
-  def sendMessage(e: Employee): IO[Unit] = IO {
-    receivers += e
-  }
-}
-```
-@[1-7](fake repository)
-@[9-17](fake gateway)
 
 ---
 # Closing notes
