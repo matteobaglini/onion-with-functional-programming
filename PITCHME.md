@@ -14,8 +14,11 @@ sauce
 
 +++
 # Big thanks to
-<img align="left" src="assets/jug-trento.png">
-<img align="left" src="assets/sponsors.png">
+<img align="center" src="assets/jug-trento.png">
+
++++
+# Big thanks to
+<img align="center" src="assets/sponsors.png">
 
 ---
 # The @color[GoldenRod](lab) rat
