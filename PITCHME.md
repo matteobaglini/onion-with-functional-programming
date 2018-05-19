@@ -219,6 +219,7 @@ val toS : Int => String = n => {
 ## @color[IndianRed](Functions)
 
 +++
+## Referential transparency
 ```scala
 val y = foo(42) + foo(42)
 ```
