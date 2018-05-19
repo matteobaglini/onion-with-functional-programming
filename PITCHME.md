@@ -211,6 +211,15 @@ val toS : Int => String = n => {
 ## @color[IndianRed](Functions)
 
 +++
+```scala
+val y = foo(42) + foo(42)
+```
+```scala
+val x = foo(42)
+val y = x + x
+```
+
++++
 ## Purity Benefits
 functions get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](reason)
