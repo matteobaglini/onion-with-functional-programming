@@ -1136,10 +1136,9 @@ def sendGreetings(today: XDate)
                  (implicit employeeRepository: EmployeeRepository, 
                            messageGateway: MessageGateway): IO[Unit] =
   employeeRepository
-    .loadEmployees(fileName)
+    .loadEmployees()
     .map(loaded => haveBirthday(loaded, today))
-    .flatMap(birthdays => 
-        messageGateway.sendMessages(smtpHost, smtpPort, birthdays))
+    .flatMap(birthdays => messageGateway.sendMessages(birthdays))
 ```
 
 ---
