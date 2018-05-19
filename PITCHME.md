@@ -236,7 +236,7 @@ functions get an @color[IndianRed](extraordinary quality) boost:
 +++
 ## What is it?
 <br />
-### it's an @color[GoldenRod](architectural stereotypes)
+### it's an @color[GoldenRod](architectural stereotype)
 ### useful to decompose a system
 ### in a @color[IndianRed](modular and composable) way
 
@@ -631,7 +631,7 @@ def sendMessages(/*...*/)
 
 +++
 ## First example
-## @color[IndianRed](NO) REFERENTIAL TRASPARENCY
+## @color[IndianRed](NO) REFERENTIAL TRANSPARENCY
 ## @color[GoldenRod](Future)
 
 +++
@@ -707,7 +707,7 @@ def askTwoInt(): Future[(Int, Int)] = {
 
 +++
 ## Second example
-## @color[IndianRed](YES) REFERENTIAL TRASPARENCY
+## @color[IndianRed](YES) REFERENTIAL TRANSPARENCY
 ## @color[GoldenRod](IO MONAD)
 
 +++
@@ -1028,7 +1028,7 @@ object FlatFileEmployeeRepository {
   }
 }
 ```
-@[1](the adapter module specify the tecnology)
+@[1](the adapter module specify the technology)
 @[3-4](the real adapter is provided as anonymous class)
 @[6-12](do the file related stuff)
 
@@ -1072,7 +1072,7 @@ object SmtpMessageGateway {
     }
 }
 ```
-@[1](the adapter module specify the tecnology)
+@[1](the adapter module specify the technology)
 @[3-4](the real adapter is provided as anonymous class)
 @[6-12](do the smtp related stuff)
 
