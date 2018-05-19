@@ -14,6 +14,8 @@ sauce
 
 +++
 # Big thanks to
+<img align="center" src="assets/jug-trento.png">
+<br />
 <img align="left" src="assets/sponsors.png">
 
 ---
