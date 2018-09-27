@@ -160,26 +160,26 @@ val fromS: String => Int =
 val toAndFrom: Int => Int = 
   fromS compose toS
 ```
+@[1](from _somthing_ to _something_)
 @[3-4](from Int to String)
 @[6-7](from String to Int)
 @[9-10](function composition)
 
 +++
 ## The pure version
-in this context “function” refer to the @color[IndianRed](mathematical) one
+in this context function refer to the @color[IndianRed](mathematical) one
 - @color[GoldenRod](Totaly): A function must yield a value for every possible input
 - @color[GoldenRod](Determinism): A function must yield the same value for the same input
 - @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
 
 +++
-## This is not _"allowed"_
+## This is not "allowed"
 ```scala
 val toS : Int => String = n => {
   appendAll("log.txt", "some content")
   n.toString
 }
 ```
-@[2](write to a file)
 
 +++
 ## Nor even this
@@ -191,40 +191,52 @@ val toS : Int => String = n => {
   else "Yo!"
 }
 ```
-@[1,3](mutate external state)
-@[4-5](return value depends from external state)
 
 +++
-## No side-effects is a @color[IndianRed](huge) constraint
+## Work w/out side-effects
+## is a @color[IndianRed](huge) constraint
 ## why @color[GoldenRod](embrace) it?
 
 +++
-## Side-effects are the complexity iceberg
+## Side-effects are a complexity source
 - hide inputs and outputs
 - destroy testability
 - destroy composability
 
 +++
-## Functional Programming 2.0
-is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
+## Pure Functional Programming
+## is about @color[IndianRed](eliminating) 
+## or @color[GoldenRod](controlling) side-effects
 
 +++
-## Get
+## Functions become
 ## @color[GoldenRod](Referentially Transparent)
-## @color[IndianRed](Functions)
-
-+++
-## Referentially Transparent
-An expression can be replaced with its corresponding value without changing the program's behavior.
 
 +++
 ## Referential Transparency
-```scala
-val y = foo(42) + foo(42)
-```
+An @color[GoldenRod](expression can be replaced) with its corresponding value @color[IndianRed)(without changing) the program's behavior
+
++++
+## Referential Transparency
+it means that these programs produce the same result
 ```scala
 val x = foo(42)
 val y = x + x
+```
+
+```scala
+val y = foo(42) + foo(42)
+```
+
++++
+## No Referential Transparency
+```scala
+val x = iterator.next()
+val y = x + x
+```
+
+```scala
+val y = iterator.next() + iterator.next()
 ```
 
 +++
