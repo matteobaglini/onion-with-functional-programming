@@ -1,6 +1,6 @@
 # @color[GoldenRod](Onion) Architecture
 with
-# @color[IndianRed](Pure) Functional Programming
+# @color[IndianRed](Pure) FP
 sauce
 
 ---
