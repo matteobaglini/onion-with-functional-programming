@@ -4,6 +4,11 @@ with
 sauce
 
 ---
+# Big thanks to
+<img align="left" height="79" src="assets/avanscoperta-bianco.png">
+<img align="right" src="assets/buildo.png">
+
++++
 # Who am I?
 <img align="left" src="assets/doubleloop.png">
 <img align="right" height="79" src="assets/avanscoperta-bianco.png">
