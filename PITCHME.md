@@ -72,6 +72,17 @@ val toS : Int => String = n => {
 is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
 
 +++
+## What do you mean with @color[GoldenRod](controlling)?
+
++++
+# Programs with Effects
+```scala
+val pure: A => B
+
+val effectful: A => F[B]
+```
+
++++
 ## It's a @color[IndianRed](huge) constraint
 ## why @color[GoldenRod](embrace) it?
 
@@ -84,6 +95,7 @@ is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-e
 +++
 ## The Final Outcome
 all functions become @color[GoldenRod](referentially transparent)
+
 
 +++
 ## Referential Transparency
@@ -101,18 +113,6 @@ val y = x + x
 
 ```scala
 val y = foo(42) + foo(42)
-```
-
-+++
-## Missing Referential Transparency
-these two programs yield @color[IndianRed](different results)
-```scala
-val x = iterator.next()
-val y = x + x
-```
-
-```scala
-val y = iterator.next() + iterator.next()
 ```
 
 +++
@@ -160,16 +160,16 @@ or
 ![Onion](assets/onion-zoom-2.png)
 
 +++
+## Onion as a radar
+![Radar](assets/radar.png)
+
++++
 ## Architecture Benefits
 - domain's code speaks loudly
 - infrastructure's code is contained
 - encapsulate different levels of abstraction
 - centralize cross-cutting concerns
 - reduce the need of system tests
-
-+++
-## Onion as a radar
-![Radar](assets/radar.png)
 
 ---
 # The @color[GoldenRod](lab) rat
@@ -447,9 +447,6 @@ private def loadEmployees(fileName: String): List[Employee] = {
     .map(line => parse(line))
 }
 ```
-@[2](load all lines)
-@[3](skip the first)
-@[4](and then parse each one)
 
 +++
 ## Abstraction escalation
@@ -460,8 +457,7 @@ private def loadLines(fileName: String)
 private def loadEmployees(fileName: String)
                     : List[Employee]
 ```
-@[2](from List[String])
-@[5](to List[Employee])
+@[2,5](from List[String] to List[Employee])
 
 +++
 ## Imperative style
@@ -588,34 +584,36 @@ and @color[GoldenRod](preserves referential transparency)
 +++
 ## Which one have side-effects?
 ```scala
-def loadEmployees(/*...*/)
-        : List[Employee]
+def x(/*...*/): List[Employee]
 
-def haveBirthday(/*...*/)
-        : List[Employee]
+def y(/*...*/): List[Employee]
 
-def sendMessages(/*...*/)
-        : Unit
+def z(/*...*/): Unit
+```
+
++++
+## Which one have side-effects?
+```scala
+def loadEmployees(/*...*/): List[Employee]
+
+def haveBirthday(/*...*/): List[Employee]
+
+def sendMessages(/*...*/): Unit
 ```
 
 +++
 ## Again, which one have side-effects?
 ```scala
-def loadEmployees(/*...*/)
-        : IO[List[Employee]]
+def x(/*...*/): IO[List[Employee]]
 
-def haveBirthday(/*...*/)
-        : List[Employee]
+def y(/*...*/): List[Employee]
 
-def sendMessages(/*...*/)
-        : IO[Unit]
+def z(/*...*/): IO[Unit]
 ```
-@[2,5,8](explicit return type)
 
 +++
-## First example
-## @color[IndianRed](NO) REFERENTIAL TRANSPARENCY
 ## @color[GoldenRod](Future)
+## @color[IndianRed](NOT) REFERENTIALLY TRANSPARENT
 
 +++
 ## Ask two numbers
@@ -667,7 +665,7 @@ def askTwoInt(): Future[(Int, Int)] = {
 @[2,4-5](extract local and call it twice)
 
 +++
-## Oh no! Bug!
+## Oh no! @color[IndianRed](Bug!)
 <img align="center" src="assets/future-refactored.png">
 
 +++
@@ -685,13 +683,12 @@ def askTwoInt(): Future[(Int, Int)] = {
 @[2-3,5-6](extract two locals and call them both)
 
 +++
-## WTF? Another bug!
+## WTF? Another @color[IndianRed](Bug!)
 <img align="center" src="assets/future-refactored2.png">
 
 +++
-## Second example
-## @color[IndianRed](YES) REFERENTIAL TRANSPARENCY
-## @color[GoldenRod](IO MONAD)
+## @color[GoldenRod](IO)
+## REFERENTIALLY TRANSPARENT
 
 +++
 ## Same program
@@ -800,7 +797,6 @@ private def sendMessage(smtpHost: String,
   Transport.send(msg)
 }
 ```
-@[3](return Unit)
 
 +++
 ## Wrap function expression
@@ -886,7 +882,6 @@ def sendGreetings(fileName: String,
   sendMessages(smtpHost, smtpPort, birthdays)
 }
 ```
-@[4](return Unit)
 
 +++
 ## Push up I/O execution
