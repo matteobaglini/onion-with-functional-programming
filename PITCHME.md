@@ -160,13 +160,14 @@ val fromS: String => Int =
 val toAndFrom: Int => Int = 
   fromS compose toS
 ```
-@[1](from _somthing_ to _something_)
+@[1](from _input_ to _output_)
 @[3-4](from Int to String)
 @[6-7](from String to Int)
 @[9-10](function composition)
 
 +++
-## The matematical version
+## Pure Functional Programming
+in this context “function” refer to the @color[IndianRed](mathematical) one
 - @color[GoldenRod](Total): it must yield a value for every possible input
 - @color[GoldenRod](Deterministic): it must yield the same value for the same input
 - @color[GoldenRod](Pure): it’s only effect must be the computation of its return value
@@ -193,7 +194,7 @@ val toS : Int => String = n => {
 ```
 
 +++
-## Pure Functional Programming
+## Pure FP
 is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
 
 +++
@@ -201,22 +202,24 @@ is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-e
 ## why @color[GoldenRod](embrace) it?
 
 +++
-## Side-effects are a complexity source
+## Side-effects are a @color[IndianRed](complexity source)
 - hide inputs and outputs
 - destroy testability
 - destroy composability
 
 +++
-## The Outcome
-Functions become @color[GoldenRod](Referentially Transparent)
+## The Final Outcome
+all functions become @color[GoldenRod](referentially transparent)
 
 +++
 ## Referential Transparency
-An @color[GoldenRod](expression can be replaced) with its corresponding value @color[IndianRed)(without changing) the program's behavior
+An @color[GoldenRod](expression can be replaced) with<br />
+its corresponding value @color[IndianRed](without changing)<br >
+the program's behavior
 
 +++
 ## Referential Transparency
-it means that these programs produce the same result
+it means these two programs yield the @color[GoldenRod](same result)
 ```scala
 val x = foo(42)
 val y = x + x
@@ -227,7 +230,7 @@ val y = foo(42) + foo(42)
 ```
 
 +++
-## No Referential Transparency
+## No RT Example
 ```scala
 val x = iterator.next()
 val y = x + x
@@ -238,15 +241,12 @@ val y = iterator.next() + iterator.next()
 ```
 
 +++
-## Purity/Referential Transparency Benefits
+## Referential Transparency Benefits
 functions get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](reason)
 - easier to @color[GoldenRod](compose)
 - easier to @color[GoldenRod](refactor)
 - easier to @color[GoldenRod](test)
-
-+++
-> “Functional programming (pure or otherwise) @color[GoldenRod](isn't the goal) of software engineering.<br/ ><br />Rather, @color[IndianRed](it’s a means to an end), like every other tool in the bag of a software engineer.” <br />- John A De Goes 
 
 ---
 # @color[GoldenRod](Onion)
