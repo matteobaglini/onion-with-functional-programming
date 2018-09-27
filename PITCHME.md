@@ -104,7 +104,8 @@ val y = foo(42) + foo(42)
 ```
 
 +++
-## No RT Example
+## Missing Referential Transparency
+these two programs yield @color[IndianRed](different results)
 ```scala
 val x = iterator.next()
 val y = x + x
@@ -296,7 +297,8 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 
 ---
 # Let the
-# @color[IndianRed](marriage) begins
+# @color[IndianRed](marriage)
+# begins
 
 +++
 ## Now
@@ -580,7 +582,8 @@ private def sendMessages(smtpHost: String,
 +++
 ## Benefits
 @color[IndianRed](evidence code) that interact<br />
-with the outside world and @color[GoldenRod](preserves referential transparency)
+with the outside world <br />
+and @color[GoldenRod](preserves referential transparency)
 
 +++
 ## Which one have side-effects?
@@ -872,7 +875,7 @@ private def sendMessages(smtpHost: String,
 @[3](perfect!)
 
 +++
-## Use case
+## Use case function
 ```scala
 def sendGreetings(fileName: String,
                   today: XDate,
@@ -1143,12 +1146,13 @@ class FakeMessageGateway
   }
 }
 ```
-@[1-7](fake repository)
+@[1-2](fake repository)
 @[4-6](lift value into IO)
-@[9-17](fake gateway)
+@[9-10](fake gateway)
+@[12-16](collects values)
 
 +++
-## In memory acceptance tests
+## Infrastructure free acceptance tests
 ```scala
  test("will send greetings when its somebody's birthday") {
    val john = Employee("John", "Doe", 
@@ -1186,14 +1190,14 @@ class FakeMessageGateway
 ## Play with requirements
 - handle error and print graceful messages
 - remove dependency from configuration parameters
-- different content for male/female (Mr/Ms)
+- different email content (Mr/Ms)
 - different infrastructure employee (SMTP + SMS) 
 
 +++
 ## Conclusion
 
-- Onion rules plus radar technique to @color[GoldenRod](distribute and encapsulate responsibilities)
-- Functional Programming technique to @color[IndianRed](compose behaviours and layers)
+- Onion rules plus radar technique helps to @color[GoldenRod](distribute and encapsulate responsibilities)
+- Functional Programming technique helps to @color[IndianRed](compose behaviours and layers)
 
 +++
 # @color[GoldenRod](Thanks)
