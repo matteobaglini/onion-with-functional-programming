@@ -5,8 +5,8 @@ sauce
 
 ---
 # Big thanks to
-<img align="left" height="79" src="assets/avanscoperta-bianco.png">
-<img align="right" src="assets/buildo.png">
+<img align="center" height="79" src="assets/avanscoperta-bianco.png">
+<img align="center" src="assets/buildo.png">
 
 +++
 # Who am I?
