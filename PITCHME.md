@@ -434,15 +434,21 @@ private def loadEmployees(fileName: String): List[Employee] = {
 +++
 ## Same level of abstraction
 ```scala
-private def loadEmployees(fileName: String): List[Employee] = {
+private def loadEmployees(fileName: String): List[Employee] =
   loadLines(fileName)
     .drop(1) // skip header
     .map(line => parse(line))
-}
 ```
 
 +++
-## Abstraction escalation
+## Even more
+```scala
+private def loadEmployees(fileName: String): List[Employee] =
+  parseContent(loadLines(fileName))
+```
+
++++
+## Abstraction/Type escalation
 ```scala
 private def loadLines(fileName: String)
                     : List[String]
@@ -488,11 +494,9 @@ private def sendMessages(smtpHost: String,
     val body = s"Happy Birthday, dear ${employee.firstName}!"
     val subject = "Happy Birthday!"
 
-    sendMessage(smtpHost,
-                smtpPort,
+    sendMessage(smtpHost, smtpPort,
                 "sender@here.com",
-                subject,
-                body,
+                subject, body,
                 recipient)
   }
 }
@@ -767,17 +771,12 @@ private def loadLines(fileName: String): IO[List[String]] =
 +++
 ## Compose with upper layer
 ```scala
-private def loadEmployees(fileName: String): IO[List[Employee]] = {
-  loadLines(fileName).map { lines =>
-    lines
-      .drop(1) // skip header
-      .map(line => parse(line))
-  }
-}
+private def loadEmployees(fileName: String): IO[List[Employee]] =
+  loadLines(fileName)
+    .map(lines => parseContent(lines)) 
 ```
 @[1](propagate IO)
-@[3-5](unchanged parsing logic)
-@[2, 6](wrap in a map)
+@[3](same parsing logic but wrapped in a map)
 
 +++
 ## Map
@@ -885,11 +884,10 @@ def sendGreetings(fileName: String,
 def sendGreetings(fileName: String,
                   today: XDate,
                   smtpHost: String,
-                  smtpPort: Int): IO[Unit] = {
+                  smtpPort: Int): IO[Unit] =
   loadEmployees(fileName)
     .map(loaded => haveBirthday(loaded, today))
     .flatMap(birthdays => sendMessages(smtpHost, smtpPort, birthdays))
-}
 ```
 @[4](return IO[Unit])
 @[5]("register" a loadEmployees operations)
@@ -994,13 +992,9 @@ object FlatFileEmployeeRepository {
   def fromFile(fileName: String): EmployeeRepository = 
     new EmployeeRepository {
 
-    def loadEmployees(): IO[List[Employee]] = {
-      loadLines().map { lines =>
-        lines
-          .drop(1) // skip header
-          .map(parseEmployee(_))
-      }
-    }
+    def loadEmployees(): IO[List[Employee]] =
+      loadLines()
+        .map(lines => parseContent(lines))
 
     // ... loadLines and parseEmployee ...
   }
