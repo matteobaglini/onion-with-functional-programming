@@ -149,7 +149,7 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 building block to write software
 <br /><br />
 ```scala
-val fun: A => B
+val f: A => B
 
 val toS: Int => String = 
   n => n.toString
@@ -166,14 +166,13 @@ val toAndFrom: Int => Int =
 @[9-10](function composition)
 
 +++
-## The pure version
-in this context function refer to the @color[IndianRed](mathematical) one
-- @color[GoldenRod](Totaly): A function must yield a value for every possible input
-- @color[GoldenRod](Determinism): A function must yield the same value for the same input
-- @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
+## The matematical version
+- @color[GoldenRod](Total): it must yield a value for every possible input
+- @color[GoldenRod](Deterministic): it must yield the same value for the same input
+- @color[GoldenRod](Pure): it’s only effect must be the computation of its return value
 
 +++
-## This is not "allowed"
+## This is not valid
 ```scala
 val toS : Int => String = n => {
   appendAll("log.txt", "some content")
@@ -185,6 +184,7 @@ val toS : Int => String = n => {
 ## Nor even this
 ```scala
 val list = collection.mutable.ListBuffer[Int]()
+
 val toS : Int => String = n => {
   list += n
   if (list.size < 42) n.toString
@@ -193,8 +193,11 @@ val toS : Int => String = n => {
 ```
 
 +++
-## Work w/out side-effects
-## is a @color[IndianRed](huge) constraint
+## Pure Functional Programming
+is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
+
++++
+## It's a @color[IndianRed](huge) constraint
 ## why @color[GoldenRod](embrace) it?
 
 +++
@@ -204,13 +207,8 @@ val toS : Int => String = n => {
 - destroy composability
 
 +++
-## Pure Functional Programming
-## is about @color[IndianRed](eliminating) 
-## or @color[GoldenRod](controlling) side-effects
-
-+++
-## Functions become
-## @color[GoldenRod](Referentially Transparent)
+## The Outcome
+Functions become @color[GoldenRod](Referentially Transparent)
 
 +++
 ## Referential Transparency
