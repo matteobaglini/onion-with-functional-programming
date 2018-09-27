@@ -71,8 +71,6 @@ or
 building block to write software
 <br /><br />
 ```scala
-val f: A => B
-
 val toS: Int => String = 
   n => n.toString
 
@@ -82,10 +80,9 @@ val fromS: String => Int =
 val toAndFrom: Int => Int = 
   fromS compose toS
 ```
-@[1](from _input_ to _output_)
-@[3-4](from Int to String)
-@[6-7](from String to Int)
-@[9-10](function composition)
+@[1-2](from Int to String)
+@[4-5](from String to Int)
+@[7-8](function composition)
 
 +++
 ## Pure Functional Programming
@@ -116,14 +113,14 @@ val toS : Int => String = n => {
 ```
 
 +++
-## Pure FP
-is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
+## In other words
+pure FP is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
 ```scala
 // pure (function w/out side-effect)
-val f: A => B
+val f: A => B = ...
 
 // effectful (function w/ controlled side-effect)
-val g: A => F[B]
+val g: A => F[B] = ...
 ```
 
 +++
