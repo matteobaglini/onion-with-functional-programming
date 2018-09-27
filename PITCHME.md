@@ -8,9 +8,9 @@ sauce
 <img align="left" src="assets/doubleloop.png">
 <img align="right" height="79" src="assets/avanscoperta-bianco.png">
 <br /><br />
-- declared developer :-)
-- enthusiastic technical trainer/coach
-- wannabe entrepreneur
+- declared @color[GoldenRod](developer) ;-)
+- enthusiastic technical @color[GoldenRod](trainer/coach)
+- wannabe @color[GoldenRod](entrepreneur)
 
 ---
 # The @color[GoldenRod](lab) rat
@@ -60,9 +60,7 @@ Happy birthday, dear {employee's first name}!
 ## because @color[GoldenRod](refactoring is fun!) :-)
 
 +++
-## where is
-## @color[GoldenRod](pure functional programming)
-## ?
+## where is @color[GoldenRod](pure fp)?
 
 +++
 ## Hard way 2.0
@@ -118,8 +116,6 @@ def sendGreetings(fileName: String,
 +++
 ## System Tests
 ```scala
-private val NONSTANDARD_PORT = 555
-
 def setup(): SimpleSmtpServer = {
   SimpleSmtpServer.start(NONSTANDARD_PORT)
 }
@@ -128,11 +124,9 @@ def tearDown(mailServer: SimpleSmtpServer): Unit = {
   mailServer.stop()
 }
 
-test("will send greetings when its somebody's birthday") {
-  sendGreetings("employee_data.txt",
-                XDate("2008/10/08"),
-                "localhost",
-                NONSTANDARD_PORT)
+test("will send greetings when its somebody's birthday") { mailServer =>
+  sendGreetings("employee_data.txt", XDate("2008/10/08"),
+                "localhost", NONSTANDARD_PORT)
 
   assert(mailServer.getReceivedEmailSize == 1, "message not sent?")
   val message = mailServer.getReceivedEmail()
@@ -141,9 +135,8 @@ test("will send greetings when its somebody's birthday") {
   assertEquals("Happy Birthday!", message.getHeaderValue("Subject"))
 ```
 
-@[1-9](setup the SMTP server)
-@[12-15](interact with file system and network)
-@[17-21](complex asserts)
+@[1-7](setup the SMTP server)
+@[8-17](interact with file system and network)
 
 ---
 # @color[GoldenRod](Pure)
@@ -152,34 +145,34 @@ test("will send greetings when its somebody's birthday") {
 
 +++
 ## Functional Programming
-compose functions as a central<br />
+@color[GoldenRod](compose functions) as a central<br />
 building block to write software
 <br /><br />
 ```scala
-val f: A => B
-```
+val fun: A => B
 
-+++
-## Function examples
-```scala
-val toS : Int => String = 
+val toS: Int => String = 
   n => n.toString
 
-val fromS : String => Int = 
+val fromS: String => Int = 
   s => s.length
+
+val toAndFrom: Int => Int = 
+  fromS compose toS
 ```
-@[1-2](from Int to String)
-@[4-5](from String to Int)
+@[3-4](from Int to String)
+@[6-7](from String to Int)
+@[9-10](function composition)
 
 +++
 ## The pure version
 in this context “function” refer to the @color[IndianRed](mathematical) one
-- **Totality**: A function must yield @color[GoldenRod](a value for every possible input)
-- **Determinism**: A function must yield the @color[GoldenRod](same value for the same input)
-- **Pure**: A function’s only effect must be the @color[GoldenRod](computation of its return value)
+- @color[GoldenRod](Totaly): A function must yield a value for every possible input
+- @color[GoldenRod](Determinism): A function must yield the same value for the same input
+- @color[GoldenRod](Pure): A function’s only effect must be the computation of its return value
 
 +++
-## This is not allowed
+## This is not _"allowed"_
 ```scala
 val toS : Int => String = n => {
   appendAll("log.txt", "some content")
@@ -202,8 +195,18 @@ val toS : Int => String = n => {
 @[4-5](return value depends from external state)
 
 +++
-## it's a @color[IndianRed](huge) constraint
-## @color[GoldenRod](why embrace it)?
+## No side-effects is a @color[IndianRed](huge) constraint
+## why @color[GoldenRod](embrace) it?
+
++++
+## Side-effects are the complexity iceberg
+- hide inputs and outputs
+- destroy testability
+- destroy composability
+
++++
+## Functional Programming 2.0
+is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
 
 +++
 ## Get
@@ -211,7 +214,11 @@ val toS : Int => String = n => {
 ## @color[IndianRed](Functions)
 
 +++
-## Referential transparency
+## Referentially Transparent
+An expression can be replaced with its corresponding value without changing the program's behavior.
+
++++
+## Referential Transparency
 ```scala
 val y = foo(42) + foo(42)
 ```
@@ -221,7 +228,7 @@ val y = x + x
 ```
 
 +++
-## Purity Benefits
+## Purity/Referential Transparency Benefits
 functions get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](reason)
 - easier to @color[GoldenRod](compose)
