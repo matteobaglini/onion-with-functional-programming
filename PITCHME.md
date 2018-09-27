@@ -13,132 +13,6 @@ sauce
 - wannabe @color[GoldenRod](entrepreneur)
 
 ---
-# The @color[GoldenRod](lab) rat
-
-+++
-## @color[GoldenRod](birthday greetings) kata
-by Matteo Vaccari
-<br /><br />
-https://github.com/xpmatteo/birthday-greetings-kata
-<br/>
-http://matteo.vaccari.name/blog/archives/154
-
-+++
-## @color[GoldenRod](Kata Purpose)
-<br />
-### To @color[IndianRed](learn) about
-### the ~~hexagonal~~ onion architecture
-
-+++
-## @color[IndianRed](Scala) Porting
-by Me :-)
-<br /><br />
-https://github.com/matteobaglini/birthday-greetings-kata-scala
-
-+++
-## Problem
-@color[GoldenRod](write a program that)
-1. Loads a set of employee records from a flat file
-```javascript
-last_name, first_name, date_of_birth, email
-Doe, John, 1982/10/08, john.doe@foobar.com
-Ann, Mary, 1975/09/11, mary.ann@foobar.com
-```
-2. Sends a greetings email to all employees whose birthday is today
-```AsciiDoc
-Subject: Happy birthday!
-Happy birthday, dear {employee's first name}!
-```
-
-+++
-## How to do it
-1. @color[GoldenRod](Hard way): refactor the code one tiny step at time until the code is *clean*
-2. @color[IndianRed](Simple way): implements the logic from scratch
-
-+++
-## we're going to pick the @color[IndianRed](hard way)
-## because @color[GoldenRod](refactoring is fun!) :-)
-
-+++
-## where is @color[GoldenRod](pure fp)?
-
-+++
-## Hard way 2.0
-refactor the code one tiny step at time<br />
-until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
-
-+++
-## Let's see the beast
-```scala
-def sendGreetings(fileName: String,
-                  today: XDate,
-                  smtpHost: String,
-                  smtpPort: Int): Unit = {
-  val in = new BufferedReader(new FileReader(fileName))
-  var str = ""
-  str = in.readLine // skip header
-  while ({ str = in.readLine; str != null }) {
-    val employeeData = str.split(", ")
-    val employee = Employee(employeeData(1),
-                            employeeData(0),
-                            employeeData(2),
-                            employeeData(3))
-
-    if (employee.isBirthday(today)) {
-      val recipient = employee.email
-      val body = s"Happy Birthday, dear ${employee.firstName}!"
-      val subject = "Happy Birthday!"
-
-      sendMessage(smtpHost,
-                  smtpPort,
-                  "sender@here.com",
-                  subject,
-                  body,
-                  recipient)
-    }
-  }
-}
-```
-@[1-4](use case entry point)
-@[5-8](read file content)
-@[8-13](parse each line)
-@[15](birthday check)
-@[16-25](send message)
-
-+++
-## There are tests!
-<img align="center" src="assets/tests.PNG">
-
-+++ 
-## they @color[GoldenRod](test only)
-## at @color[IndianRed](system level)
-
-+++
-## System Tests
-```scala
-def setup(): SimpleSmtpServer = {
-  SimpleSmtpServer.start(NONSTANDARD_PORT)
-}
-
-def tearDown(mailServer: SimpleSmtpServer): Unit = {
-  mailServer.stop()
-}
-
-test("will send greetings when its somebody's birthday") { mailServer =>
-  sendGreetings("employee_data.txt", XDate("2008/10/08"),
-                "localhost", NONSTANDARD_PORT)
-
-  assert(mailServer.getReceivedEmailSize == 1, "message not sent?")
-  val message = mailServer.getReceivedEmail()
-                    .next().asInstanceOf[SmtpMessage]
-  assertEquals("Happy Birthday, dear John!", message.getBody)
-  assertEquals("Happy Birthday!", message.getHeaderValue("Subject"))
-```
-
-@[1-7](setup the SMTP server)
-@[8-17](interact with file system and network)
-
----
 # @color[GoldenRod](Pure)
 # Functional
 # @color[IndianRed](Programming)
@@ -297,11 +171,62 @@ or
 ![Radar](assets/radar.png)
 
 ---
-# Let the
-# @color[IndianRed](marriage) begins
+# The @color[GoldenRod](lab) rat
 
 +++
-## Remember?
+## @color[GoldenRod](birthday greetings) kata
+by Matteo Vaccari
+<br /><br />
+https://github.com/xpmatteo/birthday-greetings-kata
+<br/>
+http://matteo.vaccari.name/blog/archives/154
+
++++
+## @color[GoldenRod](Kata Purpose)
+<br />
+### To @color[IndianRed](learn) about
+### the ~~hexagonal~~ onion architecture
+
++++
+## @color[IndianRed](Scala) Porting
+by Me :-)
+<br /><br />
+https://github.com/matteobaglini/birthday-greetings-kata-scala
+
++++
+## Problem
+@color[GoldenRod](write a program that)
+1. Loads a set of employee records from a flat file
+```javascript
+last_name, first_name, date_of_birth, email
+Doe, John, 1982/10/08, john.doe@foobar.com
+Ann, Mary, 1975/09/11, mary.ann@foobar.com
+```
+2. Sends a greetings email to all employees whose birthday is today
+```AsciiDoc
+Subject: Happy birthday!
+Happy birthday, dear {employee's first name}!
+```
+
++++
+## How to use it
+1. @color[GoldenRod](Hard way): refactor the code one tiny step at time until the code is *clean*
+2. @color[IndianRed](Simple way): implements the logic from scratch
+
++++
+## we're going to pick the @color[IndianRed](hard way)
+## because @color[GoldenRod](refactoring is fun!) :-)
+
++++
+## where is @color[GoldenRod](pure fp)?
+
++++
+## Hard way 2.0
+refactor the code one tiny step at time<br />
+until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
+
++++
+## Let's see the beast
 ```scala
 def sendGreetings(fileName: String,
                   today: XDate,
@@ -322,16 +247,56 @@ def sendGreetings(fileName: String,
       val body = s"Happy Birthday, dear ${employee.firstName}!"
       val subject = "Happy Birthday!"
 
-      sendMessage(smtpHost,
-                  smtpPort,
+      sendMessage(smtpHost, smtpPort,
                   "sender@here.com",
-                  subject,
-                  body,
+                  subject, body,
                   recipient)
     }
   }
 }
 ```
+@[1-4](use case entry point)
+@[5-8](read file content)
+@[8-13](parse each line)
+@[15](birthday check)
+@[16-23](send message)
+
++++
+## There are tests!
+<img align="center" src="assets/tests.PNG">
+
++++ 
+## they @color[GoldenRod](test only)
+## at @color[IndianRed](system level)
+
++++
+## System Tests
+```scala
+def setup(): SimpleSmtpServer = {
+  SimpleSmtpServer.start(NONSTANDARD_PORT)
+}
+
+def tearDown(mailServer: SimpleSmtpServer): Unit = {
+  mailServer.stop()
+}
+
+test("will send greetings when its somebody's birthday") { mailServer =>
+  sendGreetings("employee_data.txt", XDate("2008/10/08"),
+                "localhost", NONSTANDARD_PORT)
+
+  assert(mailServer.getReceivedEmailSize == 1, "message not sent?")
+  val message = mailServer.getReceivedEmail()
+                    .next().asInstanceOf[SmtpMessage]
+  assertEquals("Happy Birthday, dear John!", message.getBody)
+  assertEquals("Happy Birthday!", message.getHeaderValue("Subject"))
+```
+
+@[1-7](setup the SMTP server)
+@[8-17](interact with file system and network)
+
+---
+# Let the
+# @color[IndianRed](marriage) begins
 
 +++
 ## Now
@@ -343,8 +308,7 @@ def sendGreetings(fileName: String,
 
 +++
 ## Onion + Pure FP shopping list
-- split responsibilities in functions
-    - push I/O at the boundary of the system
+- split responsibilities and push I/O at the boundaries
 - remove mutable variables
 - handle side-effect (I/O)
 - express acceptance tests without infrastructure
@@ -399,18 +363,16 @@ def sendGreetings(fileName: String // ...
     val body = s"Happy Birthday, dear ${employee.firstName}!"
     val subject = "Happy Birthday!"
 
-    sendMessage(smtpHost,
-                smtpPort,
+    sendMessage(smtpHost, smtpPort,
                 "sender@here.com",
-                subject,
-                body,
+                subject, body,
                 recipient)
   }
 }  
 ```
 @[2-13](one loop to parse the file)
 @[15-21](one loop to filter employees)
-@[23-34](one loop to send messages)
+@[23-32](one loop to send messages)
 
 +++
 ## Extract functions
@@ -611,15 +573,14 @@ private def sendMessages(smtpHost: String,
 @color[GoldenRod](delays) their execution until @color[IndianRed](explicitly requested)
 
 +++ 
-## Embedded DSL
+## Like an Embedded DSL
 - @color[GoldenRod](Language): a data structure that caputure I/O
 - @color[IndianRed](Interpreter): an *engine* that actually execute I/O
 
 +++
 ## Benefits
 @color[IndianRed](evidence code) that interact<br />
-with the outside world and even more important<br />
-@color[GoldenRod](preserves referential transparency)
+with the outside world and @color[GoldenRod](preserves referential transparency)
 
 +++
 ## Which one have side-effects?
