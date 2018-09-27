@@ -6,6 +6,9 @@ sauce
 ---
 # Big thanks to
 <img align="center" height="79" src="assets/avanscoperta-bianco.png">
+
+---
+# Big thanks to
 <img align="center" src="assets/buildo.png">
 
 +++
