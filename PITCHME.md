@@ -735,7 +735,7 @@ def askTwoInt(): IO[(Int, Int)] = {
 <img align="right" src="assets/monix.png">
 
 +++
-## Let's start from input operation
+## Input operation
 ```scala
 private def loadLines(fileName: String): List[String] = {
   val source = io.Source.fromFile(fileName)
@@ -781,10 +781,10 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
 
 +++
 ## Map combinator
-compose an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) one
+chain an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) one
 
 +++
-## Continue with output operation
+## Output operation
 ```scala
 private def sendMessage(smtpHost: String,
                         smtpPort: Int,
@@ -796,7 +796,7 @@ private def sendMessage(smtpHost: String,
 ```
 
 +++
-## Wrap function expression
+## Done!
 ```scala
 private def sendMessage(smtpHost: String,
                         smtpPort: Int,
@@ -818,7 +818,6 @@ private def sendMessages(smtpHost: String,
     sendMessage(smtpHost, smtpPort, employee)
 }
 ```
-@[3](return Unit)
 
 +++
 ## Construction of many IO
@@ -896,6 +895,10 @@ def sendGreetings(fileName: String,
 @[5]("register" a loadEmployees operations)
 @[6](then change the content with map)
 @[7](then replace the content with flatMap)
+
++++
+## FlatMap combinator
+chain two @color[IndianRed](effectful) functions
 
 +++
 ## The original Main
