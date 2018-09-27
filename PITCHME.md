@@ -780,7 +780,7 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
 @[2, 6](wrap in a map)
 
 +++
-## Map combinator
+## Map
 chain an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) one
 
 +++
@@ -897,7 +897,7 @@ def sendGreetings(fileName: String,
 @[7](then replace the content with flatMap)
 
 +++
-## FlatMap combinator
+## FlatMap
 chain two @color[IndianRed](effectful) functions
 
 +++
@@ -942,11 +942,11 @@ def main(args: Array[String]): Unit = {
 
 +++
 ## DIP into Onion
-- Inner layers define interfaces (@color[GoldenRod](Ports))
-- Outer layers implement interfaces (@color[IndianRed](Adapters))
+- High-level modules define interfaces (@color[GoldenRod](Ports))
+- Low-level modules implement interfaces (@color[IndianRed](Adapters))
 
 +++
-## Infrastructure entry points
+## entry points
 ```scala
   def loadEmployees(fileName: String): IO[List[Employee]]
 
@@ -1111,8 +1111,7 @@ def main(args: Array[String]): Unit = {
 def sendGreetings(today: XDate)
                  (implicit employeeRepository: EmployeeRepository, 
                            messageGateway: MessageGateway): IO[Unit] =
-  employeeRepository
-    .loadEmployees()
+  employeeRepository.loadEmployees()
     .map(loaded => haveBirthday(loaded, today))
     .flatMap(birthdays => messageGateway.sendMessages(birthdays))
 ```
@@ -1178,21 +1177,21 @@ class FakeMessageGateway
 ## Next steps
 - abstract over effect type
 - make invalid state unrepresentable
-- remove mutable state from acceptance tests
+- remove mutable state from fakes
 - use streaming I/O (from IO[List[A]] to Stream[IO, A])
 
 +++
 ## Play with requirements
 - handle error and print graceful messages
 - remove dependency from configuration parameters
-- different email content (Mr/Ms)
-- different infrastructure employee (SMTP + SMS) 
+- different message contents (Mr/Mrs)
+- different infrastructures (SMTP and/or SMS) 
 
 +++
 ## Conclusion
 
-- Onion rules plus radar technique helps to @color[GoldenRod](distribute and encapsulate responsibilities)
-- Functional Programming technique helps to @color[IndianRed](compose behaviours and layers)
+- Onion rules plus radar technique to @color[GoldenRod](distribute and encapsulate responsibilities)
+- Pure Functional Programming technique to @color[IndianRed](compose behaviours and layers)
 
 +++
 # @color[GoldenRod](Thanks)
