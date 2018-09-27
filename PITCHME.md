@@ -82,7 +82,7 @@ val toAndFrom: Int => Int =
 ```
 @[1-2](from Int to String)
 @[4-5](from String to Int)
-@[7-8](function composition)
+@[7-8](compose them)
 
 +++
 ## Pure Functional Programming
@@ -301,11 +301,12 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 ![Vision](assets/vision-final.png)
 
 +++
-## Onion + Pure FP shopping list
-- split responsibilities and push I/O at the boundaries
+## Shopping List
+- split responsibilities
+- push I/O at the boundaries
 - remove mutable variables
-- handle side-effect (I/O)
-- express acceptance tests without infrastructure
+- control side-effects (I/O ops)
+- express acceptance tests w/out infrastructure
 
 --- 
 # Split @color[GoldenRod](responsibilities)
@@ -555,7 +556,7 @@ private def sendMessages(smtpHost: String,
 ```
 
 ---
-# Handle @color[IndianRed](side-effects)
+# Control @color[IndianRed](side-effects)
 
 +++
 ## IO Monad
@@ -568,7 +569,7 @@ private def sendMessages(smtpHost: String,
 - @color[IndianRed](Interpreter): an *engine* that actually execute I/O
 
 +++
-## Benefits
+## Key Points
 @color[IndianRed](evidence code) that interact<br />
 with the outside world <br />
 and @color[GoldenRod](preserves referential transparency)
@@ -584,16 +585,6 @@ def z(/*...*/): Unit
 ```
 
 +++
-## Which one have side-effects?
-```scala
-def loadEmployees(/*...*/): List[Employee]
-
-def haveBirthday(/*...*/): List[Employee]
-
-def sendMessages(/*...*/): Unit
-```
-
-+++
 ## Again, which one have side-effects?
 ```scala
 def x(/*...*/): IO[List[Employee]]
@@ -601,6 +592,16 @@ def x(/*...*/): IO[List[Employee]]
 def y(/*...*/): List[Employee]
 
 def z(/*...*/): IO[Unit]
+```
+
++++
+## Real names
+```scala
+def loadEmployees(/*...*/): IO[List[Employee]]
+
+def haveBirthday(/*...*/): IO[List[Employee]]
+
+def sendMessages(/*...*/): IO[Unit]
 ```
 
 +++
@@ -679,7 +680,7 @@ def askTwoInt(): Future[(Int, Int)] = {
 <img align="center" src="assets/future-refactored2.png">
 
 +++
-## @color[GoldenRod](IO)
+## @color[GoldenRod](IO Monad)
 ## REFERENTIALLY TRANSPARENT
 
 +++
@@ -742,7 +743,7 @@ private def loadLines(fileName: String): List[String] = {
   finally source.close
 }
 ```
-@[1](return List[String])
+
 +++
 ## Done!
 ```scala
@@ -774,9 +775,13 @@ private def loadEmployees(fileName: String): IO[List[Employee]] = {
   }
 }
 ```
+@[1](propagate IO)
 @[3-5](unchanged parsing logic)
 @[2, 6](wrap in a map)
-@[1](propagate IO)
+
++++
+## Map combinator
+compose an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) one
 
 +++
 ## Continue with output operation
