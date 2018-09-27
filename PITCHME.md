@@ -13,6 +13,54 @@ sauce
 - wannabe @color[GoldenRod](entrepreneur)
 
 ---
+# @color[GoldenRod](Onion)
+# @color[IndianRed](Architecture)
+
++++
+## What is it?
+<br />
+### it's an @color[GoldenRod](architectural stereotype)
+### useful to decompose a system
+### in a @color[IndianRed](modular and composable) way
+
++++
+## Alias
+<br />
+### @color[IndianRed](hexagonal)
+or
+### @color[GoldenRod](port/adapter)
+
++++
+## 10,000 Feet View
+![Onion](assets/10k-feet-view.png)
+
++++
+## Onion rules
+- The application is built around an @color[GoldenRod](independent domain)
+- Direction of @color[GoldenRod](coupling is toward the center)
+- Domain code can be @color[GoldenRod](run separate from infrastructure)
+
++++
+## Zoom in @size[0.2em](1/2)
+![Onion](assets/onion-zoom-1.png)
+
++++
+## Zoom in @size[0.2em](2/2)
+![Onion](assets/onion-zoom-2.png)
+
++++
+## Onion as a radar
+![Radar](assets/radar.png)
+
++++
+## Architecture Benefits
+- domain's code speaks loudly
+- infrastructure's code is contained
+- encapsulate different levels of abstraction
+- centralize cross-cutting concerns
+- reduce the need of system tests
+
+---
 # @color[GoldenRod](Pure)
 # Functional
 # @color[IndianRed](Programming)
@@ -70,16 +118,12 @@ val toS : Int => String = n => {
 +++
 ## Pure FP
 is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
-
-+++
-## What do you mean with @color[GoldenRod](controlling)?
-
-+++
-## Programs with Effects
 ```scala
-val pure: A => B
+// pure (function w/out side-effect)
+val f: A => B
 
-val effectful: A => F[B]
+// effectful (function w/ controlled side-effect)
+val g: A => F[B]
 ```
 
 +++
@@ -93,9 +137,8 @@ val effectful: A => F[B]
 - destroy composability
 
 +++
-## The Final Outcome
-all functions become @color[GoldenRod](referentially transparent)
-
+## We earn back
+that all functions become @color[GoldenRod](referentially transparent)
 
 +++
 ## Referential Transparency
@@ -122,54 +165,6 @@ functions get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](compose)
 - easier to @color[GoldenRod](refactor)
 - easier to @color[GoldenRod](test)
-
----
-# @color[GoldenRod](Onion)
-# @color[IndianRed](Architecture)
-
-+++
-## What is it?
-<br />
-### it's an @color[GoldenRod](architectural stereotype)
-### useful to decompose a system
-### in a @color[IndianRed](modular and composable) way
-
-+++
-## Alias
-<br />
-### @color[IndianRed](hexagonal)
-or
-### @color[GoldenRod](port/adapter)
-
-+++
-## 10,000 Feet View
-![Onion](assets/10k-feet-view.png)
-
-+++
-## Onion rules
-- The application is built around an @color[GoldenRod](independent domain)
-- Direction of @color[GoldenRod](coupling is toward the center)
-- Domain code can be @color[GoldenRod](run separate from infrastructure)
-
-+++
-## Zoom in @size[0.2em](1/2)
-![Onion](assets/onion-zoom-1.png)
-
-+++
-## Zoom in @size[0.2em](2/2)
-![Onion](assets/onion-zoom-2.png)
-
-+++
-## Onion as a radar
-![Radar](assets/radar.png)
-
-+++
-## Architecture Benefits
-- domain's code speaks loudly
-- infrastructure's code is contained
-- encapsulate different levels of abstraction
-- centralize cross-cutting concerns
-- reduce the need of system tests
 
 ---
 # The @color[GoldenRod](lab) rat
