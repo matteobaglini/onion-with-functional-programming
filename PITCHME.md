@@ -4,14 +4,6 @@ with
 sauce
 
 ---
-# Big thanks to
-<img align="center" height="79" src="assets/avanscoperta-bianco.png">
-
----
-# Big thanks to
-<img align="center" src="assets/buildo.png">
-
-+++
 # Who am I?
 <img align="left" src="assets/doubleloop.png">
 <img align="right" height="79" src="assets/avanscoperta-bianco.png">
@@ -19,6 +11,10 @@ sauce
 - declared @color[GoldenRod](developer) ;-)
 - enthusiastic technical @color[GoldenRod](trainer/coach)
 - wannabe @color[GoldenRod](entrepreneur)
+
++++
+# Big thanks to
+<img align="center" src="assets/buildo.png">
 
 ---
 # @color[GoldenRod](Onion)
