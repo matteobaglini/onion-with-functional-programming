@@ -54,11 +54,11 @@ or
 
 +++
 ## Architecture Benefits
-- domain's code speaks loudly
-- infrastructure's code is contained
-- encapsulate different levels of abstraction
-- centralize cross-cutting concerns
-- reduce the need of system tests
+- domain's code @color[GoldenRod](speaks loudly)
+- infrastructure's code is @color[GoldenRod](contained)
+- @color[GoldenRod](encapsulate) different levels of abstraction
+- @color[GoldenRod](centralize) cross-cutting concerns
+- @color[GoldenRod](reduce) the need of system tests
 
 ---
 # @color[GoldenRod](Pure)
