@@ -75,7 +75,7 @@ is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-e
 ## What do you mean with @color[GoldenRod](controlling)?
 
 +++
-# Programs with Effects
+## Programs with Effects
 ```scala
 val pure: A => B
 
