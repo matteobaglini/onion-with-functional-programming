@@ -1130,12 +1130,11 @@ class FakeMessageGateway
                        "1982/10/08", "john.doe@foobar.com")
    val mary = Employee("Mary", "Ann", 
                        "1975/03/11", "mary.ann@foobar.com")
-   implicit val fakeEmployeeRepository = 
-                    new FakeEmployeeRepository(List(john, mary))
-   implicit val fakeMessageGateway =        
-                    new FakeMessageGateway()
+   val fakeEmployeeRepository = new FakeEmployeeRepository(List(john, mary))
+   val fakeMessageGateway = new FakeMessageGateway()
 
    sendGreetings(XDate("2008/10/08"))
+     (fakeEmployeeRepository, fakeMessageGateway)
      .unsafeRunSync()
 
    assert(fakeMessageGateway.receivers.size == 1)
