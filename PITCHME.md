@@ -426,7 +426,7 @@ private def loadEmployees(fileName: String): List[Employee] = {
   lines
     .drop(1) // skip header
     .map(line => {
-        val employeeData = str.split(", ")
+        val employeeData = line.split(", ")
         val employee = Employee(employeeData(1),
                                 employeeData(0),
                                 employeeData(2),
