@@ -160,7 +160,7 @@ val z = y + y
 ```
 
 ```scala
-val y = foo(42) + foo(42)
+val z = foo(x) + foo(x)
 ```
 
 ---
