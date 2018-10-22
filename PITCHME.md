@@ -18,7 +18,7 @@ sauce
 
 ---
 # Big thanks to
-<img height="600" src="assets/nanabianca_social.jpg">
+<img height="400" src="assets/nanabianca_social.jpg">
 
 ---
 # @color[GoldenRod](Onion)
