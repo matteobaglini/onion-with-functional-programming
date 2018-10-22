@@ -1088,9 +1088,11 @@ def main(args: Array[String]): Unit = {
 def sendGreetings(today: XDate)
                  (employeeRepository: EmployeeRepository, 
                   messageGateway: MessageGateway): IO[Unit] =
-  employeeRepository.loadEmployees()
-    .map(loaded => haveBirthday(loaded, today))
-    .flatMap(birthdays => messageGateway.sendMessages(birthdays))
+  for {
+    loaded <- employeeRepository.loadEmployees()
+    birthdays = haveBirthday(loaded, today)
+    _ <- messageGateway.sendMessages(birthdays)
+  } yield ()
 ```
 
 ---
