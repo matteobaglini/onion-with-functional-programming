@@ -153,10 +153,10 @@ the program's behavior
 
 ---
 ## Referential Transparency
-it means these two programs yield the @color[GoldenRod](same result)
+it means these two programs are @color[GoldenRod](equivalent)
 ```scala
-val x = foo(42)
-val y = x + x
+val y = foo(x)
+val z = y + y
 ```
 
 ```scala
