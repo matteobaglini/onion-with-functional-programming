@@ -1083,36 +1083,11 @@ def main(args: Array[String]): Unit = {
 @[8](inject into sendGreetings)
 
 ---
-## Scala implicit to the rescue
-```scala
-def sendGreetings(today: XDate)
-                 (implicit employeeRepository: EmployeeRepository, 
-                           messageGateway: MessageGateway): IO[Unit]
-```
-@[2-3](mark the parameters as implicit)
-
----
-## Scala implicit to the rescue
-```scala
-def main(args: Array[String]): Unit = {
-  implicit val employeeRepository = 
-        FlatFileEmployeeRepository.fromFile("employee_data.txt")
-  implicit val messageGateway = 
-        SmtpMessageGateway.fromEndpoint("localhost", 25)
-
-  sendGreetings(XDate())
-    .unsafeRunSync()
-}
-```
-@[2-5](mark provided values as implicit)
-@[7-8](remove explicit injection)
-
----
 ## Final implementation
 ```scala
 def sendGreetings(today: XDate)
-                 (implicit employeeRepository: EmployeeRepository, 
-                           messageGateway: MessageGateway): IO[Unit] =
+                 (employeeRepository: EmployeeRepository, 
+                  messageGateway: MessageGateway): IO[Unit] =
   employeeRepository.loadEmployees()
     .map(loaded => haveBirthday(loaded, today))
     .flatMap(birthdays => messageGateway.sendMessages(birthdays))
