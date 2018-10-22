@@ -16,43 +16,43 @@ sauce
 # @color[GoldenRod](Onion)
 # @color[IndianRed](Architecture)
 
-+++
+---
 ## What is it?
 <br />
 ### it's an @color[GoldenRod](architectural stereotype)
 ### useful to decompose a system
 ### in a @color[IndianRed](modular and composable) way
 
-+++
+---
 ## Alias
 <br />
 ### @color[IndianRed](hexagonal)
 or
 ### @color[GoldenRod](port/adapter)
 
-+++
+---
 ## 10,000 Feet View
 ![Onion](assets/10k-feet-view.png)
 
-+++
+---
 ## Onion rules
 - The application is built around an @color[GoldenRod](independent domain)
 - Direction of @color[GoldenRod](coupling is toward the center)
 - Domain code can be @color[GoldenRod](run separate from infrastructure)
 
-+++
+---
 ## Zoom in @size[0.2em](1/2)
 ![Onion](assets/onion-zoom-1.png)
 
-+++
+---
 ## Zoom in @size[0.2em](2/2)
 ![Onion](assets/onion-zoom-2.png)
 
-+++
+---
 ## Onion as a radar
 ![Radar](assets/radar.png)
 
-+++
+---
 ## Architecture Benefits
 - domain's code @color[GoldenRod](speaks loudly)
 - infrastructure's code is @color[GoldenRod](contained)
@@ -65,7 +65,7 @@ or
 # Functional
 # @color[IndianRed](Programming)
 
-+++
+---
 ## Functional Programming
 @color[GoldenRod](compose functions) as a central<br />
 building block to write software
@@ -84,14 +84,14 @@ val toAndFrom: Int => Int =
 @[4-5](from String to Int)
 @[7-8](compose them)
 
-+++
+---
 ## Pure Functional Programming
 in this context “function” refer to the @color[IndianRed](mathematical) one
 - @color[GoldenRod](Total): it must yield a value for every possible input
 - @color[GoldenRod](Deterministic): it must yield the same value for the same input
 - @color[GoldenRod](Pure): it’s only effect must be the computation of its return value
 
-+++
+---
 ## This is not valid
 ```scala
 val toS : Int => String = n => {
@@ -100,7 +100,7 @@ val toS : Int => String = n => {
 }
 ```
 
-+++
+---
 ## Nor even this
 ```scala
 val list = collection.mutable.ListBuffer[Int]()
@@ -112,7 +112,7 @@ val toS : Int => String = n => {
 }
 ```
 
-+++
+---
 ## In other words
 pure FP is about @color[IndianRed](eliminating) or @color[GoldenRod](controlling) side-effects
 ```scala
@@ -123,27 +123,27 @@ val f: A => B = ...
 val g: A => F[B] = ...
 ```
 
-+++
+---
 ## It's a @color[IndianRed](huge) constraint
 ## why @color[GoldenRod](embrace) it?
 
-+++
+---
 ## Side-effects are a @color[IndianRed](complexity source)
 - hide inputs and outputs
 - destroy testability
 - destroy composability
 
-+++
+---
 ## We earn back
 that all functions become @color[GoldenRod](referentially transparent)
 
-+++
+---
 ## Referential Transparency
 An @color[GoldenRod](expression can be replaced) with<br />
 its corresponding value @color[IndianRed](without changing)<br >
 the program's behavior
 
-+++
+---
 ## Referential Transparency
 it means these two programs yield the @color[GoldenRod](same result)
 ```scala
@@ -155,7 +155,7 @@ val y = x + x
 val y = foo(42) + foo(42)
 ```
 
-+++
+---
 ## Referential Transparency Benefits
 functions get an @color[IndianRed](extraordinary quality) boost:
 - easier to @color[GoldenRod](reason)
@@ -166,7 +166,7 @@ functions get an @color[IndianRed](extraordinary quality) boost:
 ---
 # The @color[GoldenRod](lab) rat
 
-+++
+---
 ## @color[GoldenRod](birthday greetings) kata
 by Matteo Vaccari
 <br /><br />
@@ -174,19 +174,19 @@ https://github.com/xpmatteo/birthday-greetings-kata
 <br/>
 http://matteo.vaccari.name/blog/archives/154
 
-+++
+---
 ## @color[GoldenRod](Kata Purpose)
 <br />
 ### To @color[IndianRed](learn) about
 ### the ~~hexagonal~~ onion architecture
 
-+++
+---
 ## @color[IndianRed](Scala) Porting
 by Me :-)
 <br /><br />
 https://github.com/matteobaglini/birthday-greetings-kata-scala
 
-+++
+---
 ## Problem
 @color[GoldenRod](write a program that)
 1. Loads a set of employee records from a flat file
@@ -201,24 +201,24 @@ Subject: Happy birthday!
 Happy birthday, dear {employee's first name}!
 ```
 
-+++
+---
 ## How to use it
 1. @color[GoldenRod](Hard way): refactor the code one tiny step at time until the code is *clean*
 2. @color[IndianRed](Simple way): implements the logic from scratch
 
-+++
+---
 ## we're going to pick the @color[IndianRed](hard way)
 ## because @color[GoldenRod](refactoring is fun!) :-)
 
-+++
+---
 ## where is @color[GoldenRod](pure fp)?
 
-+++
+---
 ## Hard way 2.0
 refactor the code one tiny step at time<br />
 until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
 
-+++
+---
 ## Let's see the beast
 ```scala
 def sendGreetings(fileName: String,
@@ -254,15 +254,15 @@ def sendGreetings(fileName: String,
 @[15](birthday check)
 @[16-23](send message)
 
-+++
+---
 ## There are tests!
 <img align="center" src="assets/tests.PNG">
 
-+++ 
+--- 
 ## they @color[GoldenRod](test only)
 ## at @color[IndianRed](system level)
 
-+++
+---
 ## System Tests
 ```scala
 def setup(): SimpleSmtpServer = {
@@ -292,15 +292,15 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 # @color[IndianRed](marriage)
 # begins
 
-+++
+---
 ## Now
 ![Now](assets/vision-now.png)
 
-+++
+---
 ## Final Vision
 ![Vision](assets/vision-final.png)
 
-+++
+---
 ## Shopping List
 - split responsibilities
 - push I/O at the boundaries
@@ -311,7 +311,7 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 --- 
 # Split @color[GoldenRod](responsibilities)
 
-+++
+---
 ## high level view
 ```scala
 def sendGreetings(fileName: String,
@@ -328,7 +328,7 @@ def sendGreetings(fileName: String,
 ```
 @[6-10](refactoring blind spot)
 
-+++
+---
 ## split loops
 ```scala
 def sendGreetings(fileName: String // ...
@@ -369,7 +369,7 @@ def sendGreetings(fileName: String // ...
 @[15-21](one loop to filter employees)
 @[23-32](one loop to send messages)
 
-+++
+---
 ## Extract functions
 ```scala
 def sendGreetings(fileName: String // ...
@@ -379,7 +379,7 @@ def sendGreetings(fileName: String // ...
 }
 ```
 
-+++
+---
 ## Current status
 ![Status](assets/vision-status.png)
 
@@ -388,7 +388,7 @@ def sendGreetings(fileName: String // ...
 # @color[IndianRed](mutable)
 # state
 
-+++
+---
 ## Imperative style
 ```scala
 private def loadEmployees(fileName: String): List[Employee] = {
@@ -409,7 +409,7 @@ private def loadEmployees(fileName: String): List[Employee] = {
 @[4-5](mutable var for each line)
 @[2,11](mutable collection as accumulator)
 
-+++
+---
 ## Declarative style
 ```scala
 private def loadEmployees(fileName: String): List[Employee] = {
@@ -431,7 +431,7 @@ private def loadEmployees(fileName: String): List[Employee] = {
 @[4-6](parse lines)
 @[2-3,7-12](different level of abstractions)
 
-+++
+---
 ## Same level of abstraction
 ```scala
 private def loadEmployees(fileName: String): List[Employee] =
@@ -440,14 +440,14 @@ private def loadEmployees(fileName: String): List[Employee] =
     .map(line => parse(line))
 ```
 
-+++
+---
 ## Even more
 ```scala
 private def loadEmployees(fileName: String): List[Employee] =
   parseContent(loadLines(fileName))
 ```
 
-+++
+---
 ## Abstraction/Type escalation
 ```scala
 private def loadLines(fileName: String)
@@ -458,7 +458,7 @@ private def loadEmployees(fileName: String)
 ```
 @[2,5](from List[String] to List[Employee])
 
-+++
+---
 ## Imperative style
 ```scala
 private def haveBirthday(employees: List[Employee],
@@ -474,7 +474,7 @@ private def haveBirthday(employees: List[Employee],
 ```
 @[4-5](filter logic)
 
-+++
+---
 ## Declarative style
 ```scala
 private def haveBirthday(employees: List[Employee],
@@ -483,7 +483,7 @@ private def haveBirthday(employees: List[Employee],
     .filter(employee => employee.isBirthday(today))
 ```
 
-+++
+---
 ## No mutable state but...
 ```scala
 private def sendMessages(smtpHost: String,
@@ -502,7 +502,7 @@ private def sendMessages(smtpHost: String,
 }
 ```
 
-+++
+---
 ## Inline sendMessage
 ```scala
 private def sendMessages(smtpHost: String,
@@ -534,7 +534,7 @@ private def sendMessages(smtpHost: String,
 @[5-8,15-20](compose message)
 @[22](final send)
 
-+++
+---
 ## Extract functions
 ```scala
 private def sendMessages(smtpHost: String,
@@ -548,7 +548,7 @@ private def sendMessages(smtpHost: String,
 }
 ```
 
-+++
+---
 ## Extract new sendMessage
 ```scala
 private def sendMessages(smtpHost: String,
@@ -562,23 +562,23 @@ private def sendMessages(smtpHost: String,
 ---
 # Control @color[IndianRed](side-effects)
 
-+++
+---
 ## IO Monad
 @color[GoldenRod](capture) the intent of I/O on invocation and<br />
 @color[GoldenRod](delays) their execution until @color[IndianRed](explicitly requested)
 
-+++ 
+--- 
 ## Like an Embedded DSL
 - @color[GoldenRod](Language): a data structure that caputure I/O
 - @color[IndianRed](Interpreter): an *engine* that actually execute I/O
 
-+++
+---
 ## Key Points
 @color[IndianRed](evidence code) that interact<br />
 with the outside world <br />
 and @color[GoldenRod](preserves referential transparency)
 
-+++
+---
 ## Which one have side-effects?
 ```scala
 def x(/*...*/): List[Employee]
@@ -588,7 +588,7 @@ def y(/*...*/): List[Employee]
 def z(/*...*/): Unit
 ```
 
-+++
+---
 ## Again, which one have side-effects?
 ```scala
 def x(/*...*/): IO[List[Employee]]
@@ -598,7 +598,7 @@ def y(/*...*/): List[Employee]
 def z(/*...*/): IO[Unit]
 ```
 
-+++
+---
 ## Real names
 ```scala
 def loadEmployees(/*...*/): IO[List[Employee]]
@@ -608,11 +608,11 @@ def haveBirthday(/*...*/): IO[List[Employee]]
 def sendMessages(/*...*/): IO[Unit]
 ```
 
-+++
+---
 ## @color[GoldenRod](Future)
 ## @color[IndianRed](NOT) REFERENTIALLY TRANSPARENT
 
-+++
+---
 ## Ask two numbers
 ```scala
 def askInt(): Future[Int] = 
@@ -633,11 +633,11 @@ def program(): Future[Unit] =
 @[5](ask two numbers)
 @[11-13](the program)
 
-+++
+---
 ## It works!
 <img align="center" src="assets/future-duplication.png">
 
-+++
+---
 ## Look closely
 ```scala
 def askTwoInt(): Future[(Int, Int)] =
@@ -648,7 +648,7 @@ def askTwoInt(): Future[(Int, Int)] =
 ```
 @[3-4](two sequential calls)
 
-+++
+---
 ## First Refactoring
 ```scala
 def askTwoInt(): Future[(Int, Int)] = {
@@ -661,11 +661,11 @@ def askTwoInt(): Future[(Int, Int)] = {
 ```
 @[2,4-5](extract local and call it twice)
 
-+++
+---
 ## Oh no! @color[IndianRed](Bug!)
 <img align="center" src="assets/future-refactored.png">
 
-+++
+---
 ## Second Refactoring
 ```scala
 def askTwoInt(): Future[(Int, Int)] = {
@@ -679,15 +679,15 @@ def askTwoInt(): Future[(Int, Int)] = {
 ```
 @[2-3,5-6](extract two locals and call them both)
 
-+++
+---
 ## WTF? Another @color[IndianRed](Bug!)
 <img align="center" src="assets/future-refactored2.png">
 
-+++
+---
 ## @color[GoldenRod](IO Monad)
 ## REFERENTIALLY TRANSPARENT
 
-+++
+---
 ## Same program
 ```scala
 def askInt(): IO[Int] = 
@@ -705,7 +705,7 @@ def program(): IO[Unit] =
     .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
 
-+++
+---
 ## Same Refactoring
 ```scala
 def askTwoInt(): IO[(Int, Int)] = {
@@ -728,17 +728,17 @@ def askTwoInt(): IO[(Int, Int)] = {
 }
 ```
 
-+++
+---
 ## It works!
 <img align="center" src="assets/io-refactored.png">
 
-+++
+---
 ## IO Monad in Scala
 <img align="left" src="assets/cats.png">
 <img align="center" src="assets/scalaz.png">
 <img align="right" src="assets/monix.png">
 
-+++
+---
 ## Input operation
 ```scala
 private def loadLines(fileName: String): List[String] = {
@@ -748,7 +748,7 @@ private def loadLines(fileName: String): List[String] = {
 }
 ```
 
-+++
+---
 ## Done!
 ```scala
 private def loadLines(fileName: String): IO[List[String]] = IO {
@@ -759,7 +759,7 @@ private def loadLines(fileName: String): IO[List[String]] = IO {
 ```
 @[1](return IO[List[String]])
 
-+++
+---
 ## Safe resource acquisition/release
 ```scala
 private def loadLines(fileName: String): IO[List[String]] =
@@ -768,7 +768,7 @@ private def loadLines(fileName: String): IO[List[String]] =
              { source => IO(source.close) }
 ```
 
-+++
+---
 ## Compose with upper layer
 ```scala
 private def loadEmployees(fileName: String): IO[List[Employee]] =
@@ -778,11 +778,11 @@ private def loadEmployees(fileName: String): IO[List[Employee]] =
 @[1](propagate IO)
 @[3](same parsing logic but wrapped in a map)
 
-+++
+---
 ## Map
 chain an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) one
 
-+++
+---
 ## Output operation
 ```scala
 private def sendMessage(smtpHost: String,
@@ -794,7 +794,7 @@ private def sendMessage(smtpHost: String,
 }
 ```
 
-+++
+---
 ## Done!
 ```scala
 private def sendMessage(smtpHost: String,
@@ -807,7 +807,7 @@ private def sendMessage(smtpHost: String,
 ```
 @[3](return IO[Unit])
 
-+++
+---
 ## Execution of many I/O
 ```scala
 private def sendMessages(smtpHost: String,
@@ -818,7 +818,7 @@ private def sendMessages(smtpHost: String,
 }
 ```
 
-+++
+---
 ## Construction of many IO
 ```scala
 private def sendMessages(smtpHost: String,
@@ -832,12 +832,12 @@ private def sendMessages(smtpHost: String,
 @[4](from Employee to IO[Unit])
 @[3](List[IO[Unit]] it's not what we want)
 
-+++
+---
 ## Map vs Traverse
 - @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[Unit]])
 - @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[Unit]])
 
-+++
+---
 ## Traverse power!
 ```scala
 private def sendMessages(smtpHost: String,
@@ -851,7 +851,7 @@ private def sendMessages(smtpHost: String,
 @[4](traversal over a structure with an effect)
 @[3](better but List of Unit is like Unit)
 
-+++
+---
 ## Discard results
 ```scala
 private def sendMessages(smtpHost: String,
@@ -865,7 +865,7 @@ private def sendMessages(smtpHost: String,
 @[4](discard results)
 @[3](perfect!)
 
-+++
+---
 ## Use case function
 ```scala
 def sendGreetings(fileName: String,
@@ -878,7 +878,7 @@ def sendGreetings(fileName: String,
 }
 ```
 
-+++
+---
 ## Push up I/O execution
 ```scala
 def sendGreetings(fileName: String,
@@ -894,11 +894,11 @@ def sendGreetings(fileName: String,
 @[6](then change the content with map)
 @[7](then replace the content with flatMap)
 
-+++
+---
 ## FlatMap
 chain two @color[IndianRed](effectful) functions
 
-+++
+---
 ## The original Main
 ```scala
 def main(args: Array[String]): Unit = {
@@ -906,7 +906,7 @@ def main(args: Array[String]): Unit = {
 }
 ```
 
-+++
+---
 ## The IO Monad Main
 ```scala
 def main(args: Array[String]): Unit = {
@@ -920,30 +920,30 @@ def main(args: Array[String]): Unit = {
 # Split @color[GoldenRod](domain)
 # From @color[IndianRed](infrastructure)
 
-+++
+---
 ## Now
 ![Now](assets/vision-status.png)
 
-+++
+---
 ## Final Vision
 ![Vision](assets/vision-final.png)
 
-+++
+---
 ## The Onion architecture pillar
 <br />
 ### @color[GoldenRod](Dependency Inversion Principle)
 
-+++
+---
 ## Dependency Inversion Principle
 - @color[GoldenRod](High-level modules) should not depend on low-level modules. Both should depend on abstractions.
 - @color[IndianRed](Abstractions) should not depend on details. Details should depend on abstractions.
 
-+++
+---
 ## DIP into Onion
 - High-level modules define interfaces (@color[GoldenRod](Ports))
 - Low-level modules implement interfaces (@color[IndianRed](Adapters))
 
-+++
+---
 ## entry points
 ```scala
   def loadEmployees(fileName: String): IO[List[Employee]]
@@ -958,7 +958,7 @@ def main(args: Array[String]): Unit = {
                     smtpPort: Int): IO[Unit]
 ```
 
-+++
+---
 ## Split parameters
 ```scala
 def loadEmployees()
@@ -976,7 +976,7 @@ def sendGreetings(today: XDate)
 @[1,4,8](domain)
 @[2,5-6,9-11](infrastructure)
 
-+++
+---
 ## Define the first Port
 ```scala
 trait EmployeeRepository {
@@ -984,7 +984,7 @@ trait EmployeeRepository {
 }
 ```
 
-+++
+---
 ## Implement the first Adapter
 ```scala
 object FlatFileEmployeeRepository {
@@ -1004,7 +1004,7 @@ object FlatFileEmployeeRepository {
 @[3-4](the real adapter is provided as anonymous class)
 @[6-12](do the file related stuff)
 
-+++
+---
 ## Define the second Port
 ```scala
 trait MessageGateway {
@@ -1012,7 +1012,7 @@ trait MessageGateway {
 }
 ```
 
-+++
+---
 ## Define the second Port
 ```scala
 trait MessageGateway {
@@ -1026,7 +1026,7 @@ trait MessageGateway {
 @[3-4](thanks to traverse we can put the implementation here)
 @[6](and open sendMessage)
 
-+++
+---
 ## Implement the second Adapter
 ```scala
 object SmtpMessageGateway {
@@ -1048,7 +1048,7 @@ object SmtpMessageGateway {
 @[3-4](the real adapter is provided as anonymous class)
 @[6-12](do the smtp related stuff)
 
-+++
+---
 ## Request Ports
 ```scala
 def sendGreetings(today: XDate)
@@ -1057,7 +1057,7 @@ def sendGreetings(today: XDate)
 ```
 @[2-3](no more file and smtp parameters)
 
-+++
+---
 ## Provide Adapters
 ```scala
 def main(args: Array[String]): Unit = {
@@ -1074,7 +1074,7 @@ def main(args: Array[String]): Unit = {
 @[2-5](build the concrete adapters)
 @[8](inject into sendGreetings)
 
-+++
+---
 ## Scala implicit to the rescue
 ```scala
 def sendGreetings(today: XDate)
@@ -1083,7 +1083,7 @@ def sendGreetings(today: XDate)
 ```
 @[2-3](mark the parameters as implicit)
 
-+++
+---
 ## Scala implicit to the rescue
 ```scala
 def main(args: Array[String]): Unit = {
@@ -1099,7 +1099,7 @@ def main(args: Array[String]): Unit = {
 @[2-5](mark provided values as implicit)
 @[7-8](remove explicit injection)
 
-+++
+---
 ## Final implementation
 ```scala
 def sendGreetings(today: XDate)
@@ -1113,7 +1113,7 @@ def sendGreetings(today: XDate)
 ---
 # @color[GoldenRod](Acceptance tests) w/out @color[IndianRed](infrastructure)
 
-+++
+---
 ## Test adapters
 ```scala
 class FakeEmployeeRepository(employees: List[Employee]) 
@@ -1139,7 +1139,7 @@ class FakeMessageGateway
 @[9-10](fake gateway)
 @[12-16](collects values)
 
-+++
+---
 ## Infrastructure free acceptance tests
 ```scala
  test("will send greetings when its somebody's birthday") {
@@ -1167,25 +1167,25 @@ class FakeMessageGateway
 ---
 # Closing notes
 
-+++
+---
 ## Next steps
 - abstract over effect type
 - make invalid state unrepresentable
 - remove mutable state from fakes
 - use streaming I/O (from IO[List[A]] to Stream[IO, A])
 
-+++
+---
 ## Play with requirements
 - handle error and print graceful messages
 - remove dependency from configuration parameters
 - different message contents (Mr/Mrs)
 - different infrastructures (SMTP and/or SMS) 
 
-+++
+---
 ## Conclusion
 
 - Onion rules plus radar technique to @color[GoldenRod](distribute and encapsulate responsibilities)
 - Pure Functional Programming technique to @color[IndianRed](compose behaviours and layers)
 
-+++
+---
 # @color[GoldenRod](Thanks)
