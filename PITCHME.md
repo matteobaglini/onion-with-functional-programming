@@ -13,14 +13,6 @@ sauce
 - wannabe @color[GoldenRod](entrepreneur)
 
 ---
-# Big thanks to
-<img src="assets/avanscoperta-bianco.png">
-
----
-# Big thanks to
-<img height="400" src="assets/nanabianca_social.jpg">
-
----
 # @color[GoldenRod](Onion)
 # @color[IndianRed](Architecture)
 
