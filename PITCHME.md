@@ -1130,7 +1130,8 @@ class FakeMessageGateway
                        "1982/10/08", "john.doe@foobar.com")
    val mary = Employee("Mary", "Ann", 
                        "1975/03/11", "mary.ann@foobar.com")
-   val fakeEmployeeRepository = new FakeEmployeeRepository(List(john, mary))
+   val fakeEmployeeRepository = 
+            new FakeEmployeeRepository(List(john, mary))
    val fakeMessageGateway = new FakeMessageGateway()
 
    sendGreetings(XDate("2008/10/08"))
@@ -1142,8 +1143,8 @@ class FakeMessageGateway
  }
 ```
 @[2-7](setup fake repository)
-@[8-9](setup fake gateway)
-@[11-12](execute usecase)
+@[8](setup fake gateway)
+@[10-12](execute usecase)
 @[14-15](simple asserts)
 
 ---
