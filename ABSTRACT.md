@@ -1,0 +1,4 @@
+# ITA
+L'assenza dei side-effect nella programmazione funzionale pura permette di creare funzioni semplici da comprendere, comporre e testare in isolamento.
+Nonostante questo, senza una chiara struttura, il risultato sarà un guazzabuglio di funzioni che mescolano diversi "concerns", livelli di astrazione e responsabilità.
+Negli anni la Onion Architecture, grazie alla sua struttra a layer concentrici, ha dimostrato di essere un modello efficace per ottenere modularità, componibilità e testabilità su larga scala. Durante questo talk, codice alla mano, vedremo come questi due concetti si completano a vicenda.
