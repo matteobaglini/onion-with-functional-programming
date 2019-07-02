@@ -10,8 +10,8 @@ sauce
 - wannabe @color[GoldenRod](entrepreneur)
 
 ---
-# Who am I?
-<img src="assets/doubleloop-home.png">
+# doubleloop
+<img src="assets/doubleloophome.png">
 
 ---
 # @color[GoldenRod](Onion)
