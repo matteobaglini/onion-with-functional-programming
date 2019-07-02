@@ -14,6 +14,10 @@ sauce
 <img src="assets/doubleloophome.png">
 
 ---
+## Thanks to
+<img src="assets/wedev.PNG">
+
+---
 # @color[GoldenRod](Onion)
 # @color[IndianRed](Architecture)
 
