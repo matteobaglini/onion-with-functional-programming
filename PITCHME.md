@@ -31,10 +31,6 @@ or
 ### @color[GoldenRod](port/adapter)
 
 ---
-## 10,000 Feet View
-![Onion](assets/10k-feet-view.png)
-
----
 ## Onion rules
 - The application is built around an @color[GoldenRod](independent domain)
 - Direction of @color[GoldenRod](coupling is toward the center)
@@ -134,10 +130,6 @@ val g: A => F[B] = ...
 - destroy composability
 
 ---
-## We earn back
-that all functions become @color[GoldenRod](referentially transparent)
-
----
 ## Referential Transparency
 An @color[GoldenRod](expression can be replaced) with<br />
 its corresponding value @color[IndianRed](without changing)<br >
@@ -175,12 +167,6 @@ https://github.com/xpmatteo/birthday-greetings-kata
 http://matteo.vaccari.name/blog/archives/154
 
 ---
-## @color[GoldenRod](Kata Purpose)
-<br />
-### To @color[IndianRed](learn) about
-### the ~~hexagonal~~ onion architecture
-
----
 ## @color[IndianRed](Scala) Porting
 by Me :-)
 <br /><br />
@@ -202,19 +188,7 @@ Happy birthday, dear {employee's first name}!
 ```
 
 ---
-## How to use it
-1. @color[GoldenRod](Hard way): refactor the code one tiny step at time until the code is *clean*
-2. @color[IndianRed](Simple way): implements the logic from scratch
-
----
-## we're going to pick the @color[IndianRed](hard way)
-## because @color[GoldenRod](refactoring is fun!) :-)
-
----
-## where is @color[GoldenRod](pure fp)?
-
----
-## Hard way 2.0
+## Task
 refactor the code one tiny step at time<br />
 until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
 
@@ -253,14 +227,6 @@ def sendGreetings(fileName: String,
 @[8-13](parse each line)
 @[15](birthday check)
 @[16-23](send message)
-
----
-## There are tests!
-<img align="center" src="assets/tests.PNG">
-
---- 
-## they @color[GoldenRod](test only)
-## at @color[IndianRed](system level)
 
 ---
 ## System Tests
@@ -312,21 +278,40 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 # Split @color[GoldenRod](responsibilities)
 
 ---
-## high level view
+## Coupled
 ```scala
 def sendGreetings(fileName: String,
                   today: XDate,
                   smtpHost: String,
                   smtpPort: Int): Unit = {
   // open file ...                      
-  while ({ str = in.readLine; str != null }) {
+  while (/* condition */) {
     // ... build employee
     // ... birthday check
     // ... send message
   }
 }
 ```
-@[6-10](refactoring blind spot)
+
+---
+## Decoupled
+```scala
+def sendGreetings(fileName: String,
+                  today: XDate,
+                  smtpHost: String,
+                  smtpPort: Int): Unit = {
+  // open file ...                      
+  while (/* condition */) {
+    // ... build employee
+  }
+  while (/* condition */) {
+    // ... birthday check
+  }
+  while (/* condition */) {
+    // ... send message
+  }
+}
+```
 
 ---
 ## split loops
