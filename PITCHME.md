@@ -10,7 +10,6 @@ sauce
 - wannabe @color[GoldenRod](entrepreneur)
 
 ---
-# doubleloop
 <img src="assets/doubleloophome.png">
 
 ---
