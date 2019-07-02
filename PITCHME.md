@@ -5,6 +5,13 @@ sauce
 
 ---
 # Who am I?
+<img align="left" src="assets/matteo.jpg">
+- declared @color[GoldenRod](developer) ;-)
+- enthusiastic technical @color[GoldenRod](trainer/coach)
+- wannabe @color[GoldenRod](entrepreneur)
+
+---
+# Who am I?
 <img align="left" src="assets/doubleloop.png">
 <img align="right" height="79" src="assets/avanscoperta-bianco.png">
 <br /><br />
@@ -429,7 +436,7 @@ private def loadEmployees(fileName: String): List[Employee] =
 ## Even more
 ```scala
 private def loadEmployees(fileName: String): List[Employee] =
-  parseContent(loadLines(fileName))
+  loadLines(fileName) andThen parseContent
 ```
 
 ---
@@ -851,7 +858,7 @@ private def sendMessages(smtpHost: String,
 @[3](perfect!)
 
 ---
-## Use case function
+## Use case
 ```scala
 def sendGreetings(fileName: String,
                   today: XDate,
@@ -1096,10 +1103,8 @@ class FakeMessageGateway
   }
 }
 ```
-@[1-2](fake repository)
-@[4-6](lift value into IO)
-@[9-10](fake gateway)
-@[12-16](collects values)
+@[1-6](fake repository)
+@[9-16](fake gateway)
 
 ---
 ## Infrastructure free acceptance tests
