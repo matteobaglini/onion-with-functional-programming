@@ -4,7 +4,8 @@ with
 sauce
 
 ---
-# Who am I?
+## Who am I?
+<img height="250" align="right" src="assets/matteo.jpg">
 - declared @color[GoldenRod](developer) ;-)
 - enthusiastic technical @color[GoldenRod](trainer/coach)
 - wannabe @color[GoldenRod](entrepreneur)
