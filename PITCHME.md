@@ -362,8 +362,9 @@ def sendGreetings(fileName: String // ...
 }  
 ```
 @[2-13](one loop to parse the file)
-@[1,10,12](one loop to parse the file)
+@[2,11,13](one loop to parse the file)
 @[15-21](one loop to filter employees)
+@[15,18,21](one loop to filter employees)
 @[23-32](one loop to send messages)
 
 ---
