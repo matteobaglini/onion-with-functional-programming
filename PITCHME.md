@@ -20,7 +20,7 @@ sauce
 
 ---
 ## Thanks to
-<img src="assets/xeel.png">
+<img src="assets/xeel-logo.jpg">
 
 ---
 # @color[GoldenRod](Onion)
