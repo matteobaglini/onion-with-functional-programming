@@ -167,13 +167,15 @@ functions get an @color[IndianRed](extraordinary quality) boost:
 ---
 ## @color[GoldenRod](birthday greetings) kata
 <img src="assets/repo-vaccari.PNG">
-<br /><br />
+by Matteo Vaccari
+<br />
 https://github.com/xpmatteo/birthday-greetings-kata
 
 ---
 ## @color[IndianRed](Scala) Porting
 <img src="assets/repo-baglini.PNG">
-<br /><br />
+by Me ;-)
+<br />
 https://github.com/matteobaglini/birthday-greetings-kata-scala
 
 ---
