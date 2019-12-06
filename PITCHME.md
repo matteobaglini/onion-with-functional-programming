@@ -11,11 +11,16 @@ sauce
 - wannabe @color[GoldenRod](entrepreneur)
 
 ---
+## doubleloop
 <img src="assets/doubleloophome.png">
 
 ---
 ## Thanks to
-<img src="assets/wedev.PNG">
+<img src="assets/agileleantuscany.jpeg">
+
+---
+## Thanks to
+<img src="assets/xeel.png">
 
 ---
 # @color[GoldenRod](Onion)
