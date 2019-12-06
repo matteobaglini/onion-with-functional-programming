@@ -450,10 +450,10 @@ def loadEmployees(fileName: String): List[Employee] =
 ## Abstraction/Type escalation
 ```scala
 def loadLines(fileName: String)
-                    : List[String]
+                : List[String]
 
 def loadEmployees(fileName: String)
-                    : List[Employee]
+                : List[Employee]
 ```
 @[2,5](from List[String] to List[Employee])
 
@@ -461,7 +461,7 @@ def loadEmployees(fileName: String)
 ## Imperative style
 ```scala
 def haveBirthday(employees: List[Employee],
-                         today: XDate): List[Employee] = {
+                 today: XDate): List[Employee] = {
   val employees = new ListBuffer[Employee]
   for (employee <- employees) {
     if (employee.isBirthday(today)) {
@@ -477,7 +477,7 @@ def haveBirthday(employees: List[Employee],
 ## Declarative style
 ```scala
 def haveBirthday(employees: List[Employee],
-                         today: XDate): List[Employee] =
+                 today: XDate): List[Employee] =
   employees
     .filter(employee => employee.isBirthday(today))
 ```
@@ -486,8 +486,8 @@ def haveBirthday(employees: List[Employee],
 ## No mutable state but...
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
+                 smtpPort: Int,
+                 employees: List[Employee]): Unit = {
   for (employee <- employees) {
     val recipient = employee.email
     val body = s"Happy Birthday, dear ${employee.firstName}!"
@@ -505,8 +505,8 @@ def sendMessages(smtpHost: String,
 ## Inline sendMessage
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
+                 smtpPort: Int,
+                 employees: List[Employee]): Unit = {
   for (employee <- employees) {
     val recipient = employee.email
     val sender = "sender@here.com"
@@ -537,8 +537,8 @@ def sendMessages(smtpHost: String,
 ## Extract functions
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
+                 smtpPort: Int,
+                 employees: List[Employee]): Unit = {
   for (employee <- employees) {
     val session = buildSession(smtpHost, smtpPort)
     val msg = buildMessage(session, employee)
@@ -551,8 +551,8 @@ def sendMessages(smtpHost: String,
 ## Extract new sendMessage
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
+                 smtpPort: Int,
+                 employees: List[Employee]): Unit = {
   for (employee <- employees)
     sendMessage(smtpHost, smtpPort, employee)
 }
@@ -628,8 +628,8 @@ def program(): Future[Unit] =
   askTwoInt()
     .flatMap(pair => Future(println(s"Result: ${pair}")))
 ```
-@[1](ask a number)
-@[5](ask two numbers)
+@[1-3](ask a number)
+@[5-9](ask two numbers)
 @[11-13](the program)
 
 ---
@@ -645,7 +645,6 @@ def askTwoInt(): Future[(Int, Int)] =
     y <- askInt()
   } yield (x , y)
 ```
-@[3-4](two sequential calls)
 
 ---
 ## First Refactoring
@@ -658,7 +657,6 @@ def askTwoInt(): Future[(Int, Int)] = {
   } yield (x , y)
 }
 ```
-@[2,4-5](extract local and call it twice)
 
 ---
 ## Oh no! @color[IndianRed](Bug!)
@@ -676,7 +674,6 @@ def askTwoInt(): Future[(Int, Int)] = {
   } yield (x , y)
 }
 ```
-@[2-3,5-6](extract two locals and call them both)
 
 ---
 ## WTF? Another @color[IndianRed](Bug!)
@@ -703,9 +700,10 @@ def program(): IO[Unit] =
   askTwoInt()
     .flatMap(pair => IO(println(s"Result: ${pair}")))
 ```
+@[5-9](ask two numbers)
 
 ---
-## Same Refactoring
+## Same Two Refactorings
 ```scala
 def askTwoInt(): IO[(Int, Int)] = {
   val sameAsk = askInt()
@@ -732,12 +730,6 @@ def askTwoInt(): IO[(Int, Int)] = {
 <img align="center" src="assets/io-refactored.png">
 
 ---
-## IO Monad in Scala
-<img align="left" src="assets/cats.png">
-<img align="center" src="assets/scalaz.png">
-<img align="right" src="assets/monix.png">
-
----
 ## Input operation
 ```scala
 def loadLines(fileName: String): List[String] = {
@@ -759,15 +751,6 @@ def loadLines(fileName: String): IO[List[String]] = IO {
 @[1](return IO[List[String]])
 
 ---
-## Safe resource acquisition/release
-```scala
-def loadLines(fileName: String): IO[List[String]] =
-  IO(io.Source.fromFile(fileName))
-    .bracket { source => IO(source.getLines.toList) } 
-             { source => IO(source.close) }
-```
-
----
 ## Compose with upper layer
 ```scala
 def loadEmployees(fileName: String): IO[List[Employee]] =
@@ -778,15 +761,11 @@ def loadEmployees(fileName: String): IO[List[Employee]] =
 @[3](same parsing logic but wrapped in a map)
 
 ---
-## Map
-chain an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) one
-
----
 ## Output operation
 ```scala
 def sendMessage(smtpHost: String,
-                        smtpPort: Int,
-                        employee: Employee): Unit = {
+                smtpPort: Int,
+                employee: Employee): Unit = {
   val session = buildSession(smtpHost, smtpPort)
   val msg = buildMessage(session, employee)
   Transport.send(msg)
@@ -797,8 +776,8 @@ def sendMessage(smtpHost: String,
 ## Done!
 ```scala
 def sendMessage(smtpHost: String,
-                        smtpPort: Int,
-                        employee: Employee): IO[Unit] = IO {
+                smtpPort: Int,
+                employee: Employee): IO[Unit] = IO {
   val session = buildSession(smtpHost, smtpPort)
   val msg = buildMessage(session, employee)
   Transport.send(msg)
@@ -810,8 +789,8 @@ def sendMessage(smtpHost: String,
 ## Execution of many I/O
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): Unit = {
+                 smtpPort: Int,
+                 employees: List[Employee]): Unit = {
   for (employee <- employees)
     sendMessage(smtpHost, smtpPort, employee)
 }
@@ -821,8 +800,8 @@ def sendMessages(smtpHost: String,
 ## Construction of many IO
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): List[IO[Unit]] = {
+                 smtpPort: Int,
+                 employees: List[Employee]): List[IO[Unit]] = {
   employees.map { employee =>
     sendMessage(smtpHost, smtpPort, employee)
   }
@@ -830,11 +809,6 @@ def sendMessages(smtpHost: String,
 ```
 @[4](from Employee to IO[Unit])
 @[3](List[IO[Unit]] it's not what we want)
-
----
-## Map vs Traverse
-- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[Unit]])
-- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[Unit]])
 
 ---
 ## Traverse power!
@@ -851,11 +825,16 @@ def sendMessages(smtpHost: String,
 @[3](better but List of Unit is like Unit)
 
 ---
+## Map vs Traverse
+- @color[GoldenRod](map): produces a @color[GoldenRod](List[IO[Unit]])
+- @color[IndianRed](traverse): produces a @color[IndianRed](IO[List[Unit]])
+
+---
 ## Discard results
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): IO[Unit] = {
+                 smtpPort: Int,
+                 employees: List[Employee]): IO[Unit] = {
   employees.traverse_ { employee =>
     sendMessage(smtpHost, smtpPort, employee)
   }
@@ -894,8 +873,17 @@ def sendGreetings(fileName: String,
 @[7](then replace the content with flatMap)
 
 ---
-## FlatMap
-chain two @color[IndianRed](effectful) functions
+## With Syntactic Sugar
+```scala
+def sendGreetings(today: XDate)
+                 (employeeRepository: EmployeeRepository, 
+                  messageGateway: MessageGateway): IO[Unit] =
+  for {
+    loaded <- employeeRepository.loadEmployees()
+    birthdays = haveBirthday(loaded, today)
+    _ <- messageGateway.sendMessages(birthdays)
+  } yield ()
+```
 
 ---
 ## The original Main
@@ -978,6 +966,12 @@ def sendGreetings(today: XDate)
 ---
 ## Define the first Port
 ```scala
+  def loadEmployees(): IO[List[Employee]]
+```
+
+---
+## Define the first Port (2)
+```scala
 trait EmployeeRepository {
   def loadEmployees(): IO[List[Employee]]
 }
@@ -991,11 +985,8 @@ object FlatFileEmployeeRepository {
   def fromFile(fileName: String): EmployeeRepository = 
     new EmployeeRepository {
 
-    def loadEmployees(): IO[List[Employee]] =
-      loadLines()
-        .map(lines => parseContent(lines))
-
-    // ... loadLines and parseEmployee ...
+    def loadEmployees(): IO[List[Employee]] = 
+    // ... same loadLines and parseEmployee code ...
   }
 }
 ```
@@ -1033,13 +1024,8 @@ object SmtpMessageGateway {
   def fromEndpoint(smtpHost: String, smtpPort: Int): MessageGateway =
     new MessageGateway {
 
-      def sendMessage(employee: Employee): IO[Unit] = IO {
-        val session = buildSession()
-        val msg = buildMessage(session, employee)
-        Transport.send(msg)
-      }
-
-      // ...buildSession and buildMessage
+      def sendMessage(employee: Employee): IO[Unit] =
+      // ... same buildSession and buildMessage code
     }
 }
 ```
@@ -1072,19 +1058,6 @@ def main(args: Array[String]): Unit = {
 ```
 @[2-5](build the concrete adapters)
 @[8](inject into sendGreetings)
-
----
-## Final implementation
-```scala
-def sendGreetings(today: XDate)
-                 (employeeRepository: EmployeeRepository, 
-                  messageGateway: MessageGateway): IO[Unit] =
-  for {
-    loaded <- employeeRepository.loadEmployees()
-    birthdays = haveBirthday(loaded, today)
-    _ <- messageGateway.sendMessages(birthdays)
-  } yield ()
-```
 
 ---
 # @color[GoldenRod](Acceptance tests) w/out @color[IndianRed](infrastructure)
