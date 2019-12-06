@@ -48,11 +48,11 @@ or
 
 ---
 ## Zoom in @size[0.2em](1/2)
-![Onion](assets/onion-zoom-1.png)
+![Onion](assets/onion-zoom-1a.png)
 
 ---
 ## Zoom in @size[0.2em](2/2)
-![Onion](assets/onion-zoom-2.png)
+![Onion](assets/onion-zoom-2a.png)
 
 ---
 ## Onion as a radar
@@ -270,11 +270,11 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 
 ---
 ## Now
-![Now](assets/vision-now.png)
+![Now](assets/vision-now-1a.png)
 
 ---
 ## Final Vision
-![Vision](assets/vision-final.png)
+![Vision](assets/vision-final-1a.png)
 
 ---
 ## Shopping List
@@ -376,7 +376,7 @@ def sendGreetings(fileName: String // ...
 
 ---
 ## Current status
-![Status](assets/vision-status.png)
+![Status](assets/vision-status-1a.png)
 
 --- 
 # Remove
@@ -917,11 +917,11 @@ def main(args: Array[String]): Unit = {
 
 ---
 ## Now
-![Now](assets/vision-status.png)
+![Now](assets/vision-status-1a.png)
 
 ---
 ## Final Vision
-![Vision](assets/vision-final.png)
+![Vision](assets/vision-final-1a.png)
 
 ---
 ## The Onion architecture pillar
