@@ -198,11 +198,6 @@ Happy birthday, dear {employee's first name}!
 ```
 
 ---
-## Task
-refactor the code one tiny step at time<br />
-until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
-
----
 ## Let's see the beast
 ```scala
 def sendGreetings(fileName: String,
@@ -264,6 +259,11 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 @[8-17](interact with file system and network)
 
 ---
+## Task
+refactor the code one tiny step at time<br />
+until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
+
+---
 # Let the
 # @color[IndianRed](marriage)
 # begins
@@ -277,11 +277,12 @@ test("will send greetings when its somebody's birthday") { mailServer =>
 ![Vision](assets/vision-final-1a.png)
 
 ---
-## Shopping List
-- split responsibilities
+## @color[GoldenRod](Shopping) List
+- split and extract responsibilities
 - push I/O at the boundaries
 - remove mutable variables
 - control side-effects (I/O ops)
+- introduce ports and adapters
 - express acceptance tests w/out infrastructure
 
 --- 
@@ -361,6 +362,7 @@ def sendGreetings(fileName: String // ...
 }  
 ```
 @[2-13](one loop to parse the file)
+@[1,10,12](one loop to parse the file)
 @[15-21](one loop to filter employees)
 @[23-32](one loop to send messages)
 
