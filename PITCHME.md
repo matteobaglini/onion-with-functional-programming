@@ -130,10 +130,6 @@ val g: A => F[B] = ...
 ```
 
 ---
-## It's a @color[IndianRed](huge) constraint
-## why @color[GoldenRod](embrace) it?
-
----
 ## Side-effects are a @color[IndianRed](complexity source)
 - hide inputs and outputs
 - destroy testability
@@ -267,14 +263,6 @@ until the code is @color[GoldenRod](*clean*) and @color[IndianRed](*pure*)
 # Let the
 # @color[IndianRed](marriage)
 # begins
-
----
-## Now
-![Now](assets/vision-now-1a.png)
-
----
-## Final Vision
-![Vision](assets/vision-final-1a.png)
 
 ---
 ## @color[GoldenRod](Shopping) List
@@ -449,13 +437,10 @@ def loadEmployees(fileName: String): List[Employee] =
 ---
 ## Abstraction/Type escalation
 ```scala
-def loadLines(fileName: String)
-                : List[String]
+def loadLines(fileName: String): List[String]
 
-def loadEmployees(fileName: String)
-                : List[Employee]
+def loadEmployees(fileName: String): List[Employee]
 ```
-@[2,5](from List[String] to List[Employee])
 
 ---
 ## Imperative style
@@ -814,8 +799,8 @@ def sendMessages(smtpHost: String,
 ## Traverse power!
 ```scala
 def sendMessages(smtpHost: String,
-                         smtpPort: Int,
-                         employees: List[Employee]): IO[List[Unit]] = {
+                 smtpPort: Int,
+                 employees: List[Employee]): IO[List[Unit]] = {
   employees.traverse { employee =>
     sendMessage(smtpHost, smtpPort, employee)
   }
@@ -986,7 +971,7 @@ object FlatFileEmployeeRepository {
     new EmployeeRepository {
 
     def loadEmployees(): IO[List[Employee]] = 
-    // ... same loadLines and parseEmployee code ...
+        // ...same load and parse code
   }
 }
 ```
@@ -1025,7 +1010,7 @@ object SmtpMessageGateway {
     new MessageGateway {
 
       def sendMessage(employee: Employee): IO[Unit] =
-      // ... same buildSession and buildMessage code
+        // ...same buildSession and buildMessage code
     }
 }
 ```
