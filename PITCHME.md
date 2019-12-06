@@ -366,6 +366,7 @@ def sendGreetings(fileName: String // ...
 @[15-21](one loop to filter employees)
 @[15,18,21](one loop to filter employees)
 @[23-32](one loop to send messages)
+@[23](one loop to send messages)
 
 ---
 ## Extract functions
@@ -384,12 +385,12 @@ def sendGreetings(fileName: String // ...
 --- 
 # Remove
 # @color[IndianRed](mutable)
-# state
+# state & Co
 
 ---
 ## Imperative style
 ```scala
-private def loadEmployees(fileName: String): List[Employee] = {
+def loadEmployees(fileName: String): List[Employee] = {
   val buffer = new ListBuffer[Employee]
   val in = new BufferedReader(new FileReader(fileName))
   var str = in.readLine // skip header
@@ -410,7 +411,7 @@ private def loadEmployees(fileName: String): List[Employee] = {
 ---
 ## Declarative style
 ```scala
-private def loadEmployees(fileName: String): List[Employee] = {
+def loadEmployees(fileName: String): List[Employee] = {
   val source = io.Source.fromFile(fileName)
   val lines = source.getLines.toList
   lines
@@ -432,7 +433,7 @@ private def loadEmployees(fileName: String): List[Employee] = {
 ---
 ## Same level of abstraction
 ```scala
-private def loadEmployees(fileName: String): List[Employee] =
+def loadEmployees(fileName: String): List[Employee] =
   loadLines(fileName)
     .drop(1) // skip header
     .map(line => parse(line))
@@ -441,17 +442,17 @@ private def loadEmployees(fileName: String): List[Employee] =
 ---
 ## Even more
 ```scala
-private def loadEmployees(fileName: String): List[Employee] =
+def loadEmployees(fileName: String): List[Employee] =
   loadLines(fileName) andThen parseContent
 ```
 
 ---
 ## Abstraction/Type escalation
 ```scala
-private def loadLines(fileName: String)
+def loadLines(fileName: String)
                     : List[String]
 
-private def loadEmployees(fileName: String)
+def loadEmployees(fileName: String)
                     : List[Employee]
 ```
 @[2,5](from List[String] to List[Employee])
@@ -459,7 +460,7 @@ private def loadEmployees(fileName: String)
 ---
 ## Imperative style
 ```scala
-private def haveBirthday(employees: List[Employee],
+def haveBirthday(employees: List[Employee],
                          today: XDate): List[Employee] = {
   val employees = new ListBuffer[Employee]
   for (employee <- employees) {
@@ -475,7 +476,7 @@ private def haveBirthday(employees: List[Employee],
 ---
 ## Declarative style
 ```scala
-private def haveBirthday(employees: List[Employee],
+def haveBirthday(employees: List[Employee],
                          today: XDate): List[Employee] =
   employees
     .filter(employee => employee.isBirthday(today))
@@ -484,7 +485,7 @@ private def haveBirthday(employees: List[Employee],
 ---
 ## No mutable state but...
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): Unit = {
   for (employee <- employees) {
@@ -503,7 +504,7 @@ private def sendMessages(smtpHost: String,
 ---
 ## Inline sendMessage
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): Unit = {
   for (employee <- employees) {
@@ -535,7 +536,7 @@ private def sendMessages(smtpHost: String,
 ---
 ## Extract functions
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): Unit = {
   for (employee <- employees) {
@@ -549,7 +550,7 @@ private def sendMessages(smtpHost: String,
 ---
 ## Extract new sendMessage
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): Unit = {
   for (employee <- employees)
@@ -739,7 +740,7 @@ def askTwoInt(): IO[(Int, Int)] = {
 ---
 ## Input operation
 ```scala
-private def loadLines(fileName: String): List[String] = {
+def loadLines(fileName: String): List[String] = {
   val source = io.Source.fromFile(fileName)
   try source.getLines.toList
   finally source.close
@@ -749,7 +750,7 @@ private def loadLines(fileName: String): List[String] = {
 ---
 ## Done!
 ```scala
-private def loadLines(fileName: String): IO[List[String]] = IO {
+def loadLines(fileName: String): IO[List[String]] = IO {
   val source = io.Source.fromFile(fileName)
   try source.getLines.toList
   finally source.close
@@ -760,7 +761,7 @@ private def loadLines(fileName: String): IO[List[String]] = IO {
 ---
 ## Safe resource acquisition/release
 ```scala
-private def loadLines(fileName: String): IO[List[String]] =
+def loadLines(fileName: String): IO[List[String]] =
   IO(io.Source.fromFile(fileName))
     .bracket { source => IO(source.getLines.toList) } 
              { source => IO(source.close) }
@@ -769,7 +770,7 @@ private def loadLines(fileName: String): IO[List[String]] =
 ---
 ## Compose with upper layer
 ```scala
-private def loadEmployees(fileName: String): IO[List[Employee]] =
+def loadEmployees(fileName: String): IO[List[Employee]] =
   loadLines(fileName)
     .map(lines => parseContent(lines)) 
 ```
@@ -783,7 +784,7 @@ chain an @color[IndianRed](effectful) function with a @color[GoldenRod](pure) on
 ---
 ## Output operation
 ```scala
-private def sendMessage(smtpHost: String,
+def sendMessage(smtpHost: String,
                         smtpPort: Int,
                         employee: Employee): Unit = {
   val session = buildSession(smtpHost, smtpPort)
@@ -795,7 +796,7 @@ private def sendMessage(smtpHost: String,
 ---
 ## Done!
 ```scala
-private def sendMessage(smtpHost: String,
+def sendMessage(smtpHost: String,
                         smtpPort: Int,
                         employee: Employee): IO[Unit] = IO {
   val session = buildSession(smtpHost, smtpPort)
@@ -808,7 +809,7 @@ private def sendMessage(smtpHost: String,
 ---
 ## Execution of many I/O
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): Unit = {
   for (employee <- employees)
@@ -819,7 +820,7 @@ private def sendMessages(smtpHost: String,
 ---
 ## Construction of many IO
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): List[IO[Unit]] = {
   employees.map { employee =>
@@ -838,7 +839,7 @@ private def sendMessages(smtpHost: String,
 ---
 ## Traverse power!
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): IO[List[Unit]] = {
   employees.traverse { employee =>
@@ -852,7 +853,7 @@ private def sendMessages(smtpHost: String,
 ---
 ## Discard results
 ```scala
-private def sendMessages(smtpHost: String,
+def sendMessages(smtpHost: String,
                          smtpPort: Int,
                          employees: List[Employee]): IO[Unit] = {
   employees.traverse_ { employee =>
